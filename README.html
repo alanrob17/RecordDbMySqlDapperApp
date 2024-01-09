@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="recorddb-using-mysql-and-dapper">RecordDb using MySQL and Dapper</h1>
+<p>This is a .Net Core console program that is used to test methods that I have created for use in My ASP.Net core website.</p>
+<p>This version uses <strong>MySql</strong> with <strong>Dapper</strong> to extract data from my Record database.</p>
+<p>See the <a href="https://github.com/alanrob17/RecordEFConsole">RecordEFConsole repository</a> README for documentation on the database structure.</p>
+<h2 id="other-versions-of-this-code">Other versions of this code</h2>
+<p>I have written a number of different versions of this code using various database technologies.</p>
+<p>The original code was written using ADO.Net 3.5 and is in a private repository. I can make this code available if you require.</p>
+<h3 id="sql-server">SQL Server</h3>
+<ul>
+<li><a href="https://github.com/alanrob17/RecordEFConsole">Entity Framework and SQL server.</a></li>
+<li><a href="https://github.com/alanrob17/RecordDbSqlDapperApp">Dapper and SQL Server.</a></li>
+</ul>
+<h3 id="sqlite">Sqlite</h3>
+<ul>
+<li><a href="https://github.com/alanrob17/RecordDBEFSQLite">Entity Framework and Sqlite.</a></li>
+<li><a href="https://github.com/alanrob17/RecordDbSQLiteDapper">Dapper and Sqlite.</a></li>
+</ul>
+<h3 id="javascript">JavaScript</h3>
+<p>I have a Javascript version of my Record database that consumes JSON data from local storage.</p>
+<p><a href="https://recordlist.netlify.app/">RecordDb Website</a></p>
+<p><a href="https://github.com/alanrob17/recorddb-app">Source code.</a></p>
+<h3 id="mysql">MySql</h3>
+<p>This is a MySql version of my Record database. It is currently set up to consume data from a MySql Docker container.</p>
+<h2 id="mongodb">MongoDb</h2>
+<p>Is a Python and MongoDb version of my database.</p>
+<p><a href="https://github.com/alanrob17/record-db-mongo-py">Python and MongoDb source</a></p>
+<h2 id="packages">Packages</h2>
+<ul>
+<li>Dapper</li>
+<li>Dapper.Contrib</li>
+<li>System.Configuration.ConfigurationManager</li>
+<li>System.Data.SqlClient</li>
+<li>MySql.Data</li>
+</ul>
+<h2 id="dapper">Dapper</h2>
+<p>I have a long history of working with C# and SQL Server and am proficient in creating stored procedures. Previously I have used ADO.Net to build my database layers and I am interested in using new alternatives for my databases.</p>
+<p>This has led me to working with Sqlite and MongoDb.</p>
+<p>I'm not overly comfortable with using Entity Framework and was looking for an alternative ORM so decided to investigate using Dapper as my ORM.</p>
+<h3 id="programcs">Program.cs</h3>
+<p>Contains a list of method calls for database routines that I use in my website. These call the <strong>Test</strong> folder methods that are used to return data to the console.</p>
+<h3 id="testartisttestcs">Test/ArtistTest.cs</h3>
+<p>Contains methods that consume data from the <strong>Artist</strong> table in my database.</p>
+<h3 id="testrecordtestcs">Test/RecordTest.cs</h3>
+<p>Are the <strong>Record</strong> table methods and also contains code that joins the Artist and Record tables in a one to many relationship.</p>
+<h3 id="dal-layer">DAL layer</h3>
+<p>Is a separate project that contains the <strong>Dapper</strong> database access methods.</p>
+<h3 id="models">Models</h3>
+<p>Contains the <strong>ArtistModel.cs</strong> and <strong>RecordModel.cs</strong> entities that are used for the database layer.</p>
+<h3 id="artistdataaccesscs">ArtistDataAccess.cs</h3>
+<p>Are the Dapper database access methods that are called by the <strong>Test</strong> methods bring back Artist data.</p>
+<h3 id="recorddataaccesscs">RecordDataAccess.cs</h3>
+<p>Are the Dapper Record entity routines called by the <strong>Test</strong> methods to bring back Record data.</p>
+
+</body>
+</html>

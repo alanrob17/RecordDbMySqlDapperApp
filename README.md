@@ -1,8 +1,8 @@
-# RecordDb using SQL Server and Dapper
+# RecordDb using MySQL and Dapper
 
 This is a .Net Core console program that is used to test methods that I have created for use in My ASP.Net core website.
 
-This version uses **SQL Server** with **Dapper** to extract data from my Record database.
+This version uses **MySql** with **Dapper** to extract data from my Record database.
 
 See the [RecordEFConsole repository](https://github.com/alanrob17/RecordEFConsole) README for documentation on the database structure.
 
@@ -30,12 +30,23 @@ I have a Javascript version of my Record database that consumes JSON data from l
 
 [Source code.](https://github.com/alanrob17/recorddb-app)
 
+### MySql
+
+This is a MySql version of my Record database. It is currently set up to consume data from a MySql Docker container.
+
+## MongoDb
+
+Is a Python and MongoDb version of my database.
+
+[Python and MongoDb source](https://github.com/alanrob17/record-db-mongo-py)
+
 ## Packages
 
 * Dapper
 * Dapper.Contrib
 * System.Configuration.ConfigurationManager
 * System.Data.SqlClient
+* MySql.Data
 
 ## Dapper
 
