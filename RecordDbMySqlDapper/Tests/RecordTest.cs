@@ -459,7 +459,7 @@ namespace RecordDbMySqlDapper.Tests
             RecordModel record = new()
             {
                 RecordId = recordId,
-                Name = "More Than A Little Too Much Fun Allowed",
+                Name = "Too Much Fun Allowed",
                 Field = "Hip-Hop",
                 Recorded = 2019,
                 Label = "Rebel",

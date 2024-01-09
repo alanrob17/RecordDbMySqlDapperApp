@@ -55,7 +55,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordByIdSP(133);
 
             // _rt.UpdateRecord(5258);
-            // _rt.UpdateRecordSP(5257);
+            _rt.UpdateRecordSP(5257);
 
             // _rt.DeleteRecord(5258);
             // _rt.DeleteRecordSP(5259);

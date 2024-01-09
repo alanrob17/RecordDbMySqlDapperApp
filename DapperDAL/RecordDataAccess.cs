@@ -209,7 +209,6 @@ namespace DapperDAL
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
-                parameter.Add("_artistId", record.ArtistId);
                 parameter.Add("_recordId", record.RecordId);
                 parameter.Add("_name", record.Name);
                 parameter.Add("_field", record.Field);
