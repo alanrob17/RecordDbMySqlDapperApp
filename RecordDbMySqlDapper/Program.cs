@@ -14,7 +14,6 @@ namespace RecordDbMySqlDapper
 
             // _at.CreateArtist();
 
-            // TODO: Needs to be fixed.
             // _at.CreateArtistSP();
 
             // _at.GetArtistByName("Traffic");
@@ -56,7 +55,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordByIdSP(133);
 
             // _rt.UpdateRecord(5258);
-            // _rt.UpdateRecordSP(5258, 827);
+            // _rt.UpdateRecordSP(5257);
 
             // _rt.DeleteRecord(5258);
             // _rt.DeleteRecordSP(5259);
@@ -92,13 +91,10 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordListSP();
 
             // _rt.GetRecordListMultipleTables();
-
-            // TODO: write stored procedure for this.
             // _rt.GetRecordListMultipleTablesSP();
 
             // _rt.CountDiscs("DVD");
 
-            // TODO: write stored procedure for this.
             // _rt.CountDiscsSP(string.Empty);
 
             // _rt.CountDiscs("DVD");
@@ -106,12 +102,10 @@ namespace RecordDbMySqlDapper
 
             // _rt.CountDiscs("CD");
 
-            // TODO: write stored procedure for this.
             // _rt.CountDiscsSP("CD");
 
             // _rt.CountDiscs("R");
                         
-            // TODO: write stored procedure for this.
             // _rt.CountDiscsSP("R");
 
             // _rt.GetArtistRecordEntity(2196);
@@ -120,7 +114,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetArtistNumberOfRecords(114);
             // _rt.GetArtistNumberOfRecordsSP(114);
 
-            _rt.GetRecordDetails(2196);
+            // _rt.GetRecordDetails(2196);
             // _rt.GetRecordDetailsSP(2196);
 
             // _rt.GetArtistNameFromRecord(2196);

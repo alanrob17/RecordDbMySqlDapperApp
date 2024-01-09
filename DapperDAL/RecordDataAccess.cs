@@ -223,7 +223,7 @@ namespace DapperDAL
                 parameter.Add("_cost", record.Cost);
                 parameter.Add("_review", record.Review);
 
-                cn.Execute("UpdateRecordById", parameter, commandType: CommandType.StoredProcedure);
+                cn.Execute("UpdateRecord", parameter, commandType: CommandType.StoredProcedure);
 
                 result = parameter.Get<int>("_recordId");
             }
@@ -374,7 +374,7 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>("up_GetAllArtistsAndRecords", commandType: CommandType.StoredProcedure).ToList();
+                return cn.Query<dynamic>("GetAllArtistsAndRecords", commandType: CommandType.StoredProcedure).ToList();
             }
         }
 
@@ -537,9 +537,9 @@ namespace DapperDAL
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
-                parameter.Add("@RecordId", recordId);
+                parameter.Add("_recordId", recordId);
 
-                return cn.Query<RecordModel>($"up_getSingleRecord").FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                return cn.QueryFirstOrDefault<RecordModel>("GetSingleRecord", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -558,9 +558,10 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var parameter = new { recordId };
+                var _recordId = recordId;
+                var parameter = new { _recordId };
 
-                return cn.QuerySingleOrDefault<string>("up_GetArtistNameByRecordId", parameter, commandType: CommandType.StoredProcedure);
+                return cn.QuerySingleOrDefault<string>("GetArtistNameByRecordId", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -582,8 +583,9 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var parameter = new { year };
-                return cn.ExecuteScalar<int>($"up_GetRecordedYearNumber", parameter, commandType: CommandType.StoredProcedure);
+                var _year = year;   
+                var parameter = new { _year };
+                return cn.ExecuteScalar<int>($"GetRecordedYearNumber", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -608,10 +610,11 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var parameter = new { year };
+                var _year = year;
+                var parameter = new { _year };
 
                 // get year from bought date
-                return cn.ExecuteScalar<int>("up_GetBoughtDiscCountForYear", parameter, commandType: CommandType.StoredProcedure);
+                return cn.ExecuteScalar<int>("GetBoughtDiscCountForYear", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -633,7 +636,7 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>("up_MissingRecordReview", commandType: CommandType.StoredProcedure).ToList();
+                return cn.Query<dynamic>("MissingRecordReview", commandType: CommandType.StoredProcedure).ToList();
             }
         }
 
@@ -649,23 +652,32 @@ namespace DapperDAL
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>($"up_GetNoRecordReviewCount", commandType: CommandType.StoredProcedure);
+                return cn.ExecuteScalar<int>($"GetNoRecordReviewCount", commandType: CommandType.StoredProcedure);
             }
         }
 
         public static List<dynamic> GetCostTotals()
         {
             var artistList = new List<dynamic>();
-            var query = "SELECT a.ArtistId, LTRIM(ISNULL(a.FirstName, '') + ' ' + a.LastName) AS Name, " +
-                        "TotalDiscs, " +
-                        "TotalCost " +
-                        "FROM Artist a, " +
-                        "(SELECT r.ArtistId, SUM(Discs) AS TotalDiscs, " +
+            var query = "SELECT " +
+                        "a.ArtistId, " +
+                        "TRIM(IFNULL(CONCAT(a.FirstName, ' ', a.LastName), a.LastName)) AS Name, " +
+                        "SubQuery.TotalDiscs, " +
+                        "SubQuery.TotalCost " +
+                        "FROM " +
+                        "Artist a " +
+                        "JOIN ( " +
+                        "SELECT " +
+                        "r.ArtistId, " +
+                        "SUM(Discs) AS TotalDiscs, " +
                         "SUM(Cost) AS TotalCost " +
-                        "FROM Record r " +
-                        "GROUP BY ArtistId) AS SubQuery " +
-                        "WHERE a.ArtistId = SubQuery.ArtistId " +
-                        "ORDER BY SubQuery.TotalCost DESC;";
+                        "FROM " +
+                        "Record r " +
+                        "GROUP BY " +
+                        "r.ArtistId " +
+                        ") AS SubQuery ON a.ArtistId = SubQuery.ArtistId " +
+                        "ORDER BY " +
+                        "SubQuery.TotalCost DESC;";
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
@@ -679,7 +691,7 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>("sp_getTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
+                return artistList = cn.Query<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
             }
         }
 
@@ -710,7 +722,7 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>("sp_getTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
+                return artistList = cn.Query<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
             }
         }
 

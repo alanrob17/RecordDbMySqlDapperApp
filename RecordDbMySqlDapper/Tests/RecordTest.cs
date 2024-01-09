@@ -454,13 +454,12 @@ namespace RecordDbMySqlDapper.Tests
             Console.WriteLine(message);
         }
 
-        internal static void UpdateRecordSP(int recordId, int artistId)
+        internal static void UpdateRecordSP(int recordId)
         {
             RecordModel record = new()
             {
-                ArtistId = artistId,
                 RecordId = recordId,
-                Name = "A Little Too Much Fun Allowed",
+                Name = "More Than A Little Too Much Fun Allowed",
                 Field = "Hip-Hop",
                 Recorded = 2019,
                 Label = "Rebel",
@@ -468,9 +467,9 @@ namespace RecordDbMySqlDapper.Tests
                 Rating = "***",
                 Discs = 1,
                 Media = "CD",
-                Bought = "2022-09-18",
+                Bought = "2023-09-18",
                 Cost = 19.95m,
-                Review = "This is Ethan\'s third album."
+                Review = "This is Ethan\'s thirty-third album."
             };
 
             var i = _rd.UpdateRecordSP(record);
@@ -497,7 +496,7 @@ namespace RecordDbMySqlDapper.Tests
 
             foreach (dynamic r in records)
             {
-                Console.WriteLine($"Artist: {r.ArtistName} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
+                Console.WriteLine($"Artist: {r.Artist} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
             }
         }
 
@@ -602,7 +601,7 @@ namespace RecordDbMySqlDapper.Tests
 
         internal static void GetRecordDetailsSP(int recordId)
         {
-            var record = _rd.GetFormattedRecord(recordId);
+            var record = _rd.GetFormattedRecordSP(recordId);
 
             if (record is RecordModel)
             {
@@ -618,7 +617,7 @@ namespace RecordDbMySqlDapper.Tests
 
         internal static void GetArtistNameFromRecordSP(int recordId)
         {
-            var name = _rd.GetArtistNameFromRecord(recordId);
+            var name = _rd.GetArtistNameFromRecordSP(recordId);
             Console.WriteLine(name);
         }
 
@@ -662,7 +661,7 @@ namespace RecordDbMySqlDapper.Tests
 
         internal static void GetNoRecordReviewSP()
         {
-            List<dynamic> records = _rd.MissingRecordReviews();
+            List<dynamic> records = _rd.MissingRecordReviewsSP();
 
             foreach (var record in records)
             {
