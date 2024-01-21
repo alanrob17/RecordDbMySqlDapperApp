@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using _ap = DapperDAL.Components.AppSettings;
 
 namespace DapperDAL
 {
@@ -725,9 +726,9 @@ namespace DapperDAL
             }
         }
 
-        private static string LoadConnectionString(string id = "RecordDB")
+        private static string LoadConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return _ap.Instance.ConnectionString;
         }
     }
 }

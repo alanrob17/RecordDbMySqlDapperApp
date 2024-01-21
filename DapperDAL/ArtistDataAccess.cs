@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Reflection.Metadata;
 using MySql.Data.MySqlClient;
+using _ap = DapperDAL.Components.AppSettings;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DapperDAL
@@ -295,9 +296,9 @@ namespace DapperDAL
             }
         }
 
-        public static string LoadConnectionString(string id = "RecordDB")
+        public static string LoadConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            return _ap.Instance.ConnectionString;
         }
     }
 }

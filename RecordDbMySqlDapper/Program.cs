@@ -46,7 +46,7 @@ namespace RecordDbMySqlDapper
 
             #region Record Methods
             // _rt.GetAllRecords();
-            // _rt.GetAllRecordsSP();
+            _rt.GetAllRecordsSP();
 
             // _rt.CreateRecord(838);
             // _rt.CreateRecordSP(827);
@@ -55,7 +55,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordByIdSP(133);
 
             // _rt.UpdateRecord(5258);
-            _rt.UpdateRecordSP(5257);
+            // _rt.UpdateRecordSP(5257);
 
             // _rt.DeleteRecord(5258);
             // _rt.DeleteRecordSP(5259);
@@ -76,7 +76,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordsByYearSP(1974);
 
             // _rt.GetTotalNumberOfCDs(); 
-            // _rt.GetTotalNumberOfCDsSP(); 
+            _rt.GetTotalNumberOfCDsSP(); 
 
             // _rt.GetTotalNumberOfDiscs(); 
             // _rt.GetTotalNumberOfDiscsSP(); 
