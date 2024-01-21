@@ -13,160 +13,146 @@ namespace RecordDbMySqlDapper.Tests
 {
     public class ArtistTest
     {
-        internal static void CreateArtist()
+        internal static async Task CreateArtistAsync()
         {
             var artist = new ArtistModel
             {
-                FirstName = "James",
+                FirstName = "Chris",
                 LastName = "Robson",
-                Biography = "This is the Bio for James Robson."
+                Biography = "This is the Bio for Chris Robson."
             };
 
-            var artistId = _ad.AddArtist(artist);
+            var artistId = await _ad.AddArtistAsync(artist);
 
             if (artistId > 0 && artistId < 9999)
             {
-                Console.WriteLine($"Artist added with Id: {artistId}.");
+                await Console.Out.WriteLineAsync($"Artist added with Id: {artistId}.");
             }
             else if (artistId == 9999)
             {
-                Console.WriteLine("ERROR: Artist already exists in the database!");
+                await Console.Out.WriteLineAsync("ERROR: Artist already exists in the database!");
             }
             else
             {
-                Console.WriteLine("ERROR: Artist couldn't be added to the database!");
+                await Console.Out.WriteLineAsync("ERROR: Artist couldn't be added to the database!");
             }
         }
 
-        internal static void CreateArtistSP()
+        internal static async Task CreateArtistSPAsync()
         {
             ArtistModel artist = new()
             {
-                FirstName = "Ethan",
+                FirstName = "Ethan James",
                 LastName = "Robson",
                 Name = "",
                 Biography = "Ethan is a Jazz Fusion artist."
             };
 
-            var artistId = _ad.AddArtistSP(artist);
+            var artistId = await _ad.AddArtistSPAsync(artist);
 
             if (artistId > 0 && artistId < 9999)
             {
-                Console.WriteLine($"Artist added with Id: {artistId}.");
+                await Console.Out.WriteLineAsync($"Artist added with Id: {artistId}.");
             }
             else if (artistId == 9999)
             {
-                Console.WriteLine("ERROR: Artist already exists in the database!");
+                await Console.Out.WriteLineAsync("ERROR: Artist already exists in the database!");
             }
             else
             {
-                Console.WriteLine("ERROR: Artist couldn't be added to the database!");
+                await Console.Out.WriteLineAsync("ERROR: Artist couldn't be added to the database!");
             }
         }
 
-        internal static void GetArtistByName(string name)
+        internal static async Task GetArtistByNameAsync(string name)
         {
             var artistToFind = new ArtistModel { Name = name };
 
-            var artist = _ad.GetArtistByName(artistToFind);
+            var artist = await _ad.GetArtistByNameAsync(artistToFind);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void GetArtistByNameSP(string name)
+        internal static async Task GetArtistByNameSPAsync(string name)
         {
             var artistToFind = new ArtistModel { Name = name };
 
-            var artist = _ad.GetArtistByNameSP(artistToFind);
+            var artist = await _ad.GetArtistByNameSPAsync(artistToFind);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void GetAllArtists()
+        internal static async Task GetAllArtistsAsync()
         {
-            var artists = _ad.GetArtists();
+            var artists = await _ad.GetArtistsAsync();
 
             foreach (var artist in artists)
             {
-                PrintArtist(artist);
+                await PrintArtist(artist);
             }
         }
 
 
-        internal static void GetAllArtistsSP()
+        internal static async Task GetAllArtistsSPAsync()
         {
-            var artists = _ad.GetArtistsSP();
+            var artists = await _ad.GetAllArtistsSPAsync();
 
             foreach (var artist in artists)
             {
-                PrintArtist(artist);
+                await PrintArtist(artist);
             }
         }
 
-        internal static void PrintArtist(ArtistModel artist)
-        {
-            try
-            {
-                var bio = string.IsNullOrEmpty(artist.Biography) ? "No Biography" : (artist.Biography.Length > 30 ? artist.Biography.Substring(0, 30) + "..." : artist.Biography);
-                Console.WriteLine($"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}\n{bio}\n");
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine($"No artist was found.\n\n{ex.Message}");
-            }
-        }
-
-        internal static void UpdateArtist(int artistId)
+        internal static async Task UpdateArtistAsync(int artistId)
         {
             ArtistModel artist = new()
             {
                 ArtistId = artistId,
-                FirstName = "Alan",
+                FirstName = "Christopher",
                 LastName = "Robson",
-                Biography = "Alan is an Australian C&W superstar."
+                Biography = "Chris is an Australian C&W singer."
             };
 
-            var i = _ad.UpdateArtist(artist);
+            var i = await _ad.UpdateArtistAsync(artist);
 
             var message = i > 0 ? "Artist updated." : "ERROR: Artist not updated!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
 
         }
 
-        internal static void UpdateArtistSP(int artistId)
+        internal static async Task UpdateArtistSPAsync(int artistId)
         {
             ArtistModel artist = new()
             {
                 ArtistId = artistId,
                 FirstName = "Alan",
                 LastName = "Robson",
-                Biography = "Alan is an Austrian C&W superstar."
+                Biography = "Alan is an Australian Hip-Hop superstar."
             };
 
-            var result = (int)_ad.UpdateArtistSP(artist);
+            var result = await _ad.UpdateArtistSPAsync(artist);
 
             var message = result > 0 ? "Artist updated." : "ERROR: Artist not updated!";
             Console.WriteLine(message);
         }
 
 
-        internal static void GetArtistById(int artistId)
+        internal static async Task GetArtistByIdAsync(int artistId)
         {
-            var artist = _ad.GetArtistById(artistId);
+            var artist = await _ad.GetArtistByIdAsync(artistId);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void GetArtistByIdSP(int artistId)
+        internal static async Task GetArtistByIdSPAsync(int artistId)
         {
-            var artist = _ad.GetArtistByIdSP(artistId);
+            var artist = await _ad.GetArtistByIdSPAsync(artistId);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
         internal static void DeleteArtist(int artistId)
@@ -203,21 +189,23 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        internal static void ArtistHtml(int artistId)
-        {
-            var artist = _ad.GetArtistById(artistId);
-            var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
+        // TODO: Change to an Async method
+        //internal static void ArtistHtml(int artistId)
+        //{
+        //    var artist = _ad.GetArtistById(artistId);
+        //    var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
-        }
+        //    Console.WriteLine(message);
+        //}
 
-        internal static void ArtistHtmlSP(int artistId)
-        {
-            var artist = _ad.GetArtistByIdSP(artistId);
-            var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
+        // TODO: Change to an Async method
+        //internal static void ArtistHtmlSP(int artistId)
+        //{
+        //    var artist = _ad.GetArtistByIdSP(artistId);
+        //    var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
-        }
+        //    Console.WriteLine(message);
+        //}
 
         internal static void GetArtistId(string firstName, string lastName)
         {
@@ -273,6 +261,20 @@ namespace RecordDbMySqlDapper.Tests
             var number = _ad.NoBiographyCountSP();
 
             Console.WriteLine($"The total number of artists with missing biographies: {number}.");
+        }
+
+        internal static async Task PrintArtist(ArtistModel artist)
+        {
+            try
+            {
+                var bio = string.IsNullOrEmpty(artist.Biography) ? "No Biography" : (artist.Biography.Length > 30 ? artist.Biography.Substring(0, 30) + "..." : artist.Biography);
+                await Console.Out.WriteLineAsync($"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}\n{bio}\n");
+            }
+            catch (Exception ex)
+            {
+
+                await Console.Out.WriteLineAsync($"No artist was found.\n\n{ex.Message}");
+            }
         }
     }
 }

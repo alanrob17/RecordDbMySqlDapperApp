@@ -17,57 +17,63 @@ namespace DapperDAL
 {
     public class ArtistDataAccess
     {
-        public static List<ArtistModel> GetArtists()
+        public static async Task<List<ArtistModel>> GetArtistsAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>("SELECT * FROM Artist ORDER BY LastName, FirstName", new DynamicParameters()).ToList();
+                var result = await cn.QueryAsync<ArtistModel>("SELECT * FROM Artist ORDER BY LastName, FirstName", new DynamicParameters());
+                return result.ToList();
             }
         }
 
-        public static List<ArtistModel> GetArtistsSP()
+        public static async Task<List<ArtistModel>> GetAllArtistsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>("GetAllArtists", commandType: CommandType.StoredProcedure).ToList(); 
+                var result = await cn.QueryAsync<ArtistModel>("GetAllArtists", commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
-        public static ArtistModel? GetArtistById(int artistId)
+        public static async Task<ArtistModel>? GetArtistByIdAsync(int artistId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>($"SELECT * FROM Artist WHERE ArtistId = {artistId}").FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
+                var result = await cn.QueryAsync<ArtistModel>($"SELECT * FROM Artist WHERE ArtistId = {artistId}");
+                return result.FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
             }
         }
 
-        public static ArtistModel? GetArtistByIdSP(int artistId)
+        public static async Task<ArtistModel>? GetArtistByIdSPAsync(int artistId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_artistId", artistId);
 
-                return cn.Query<ArtistModel>("GetArtistById", parameter, commandType: CommandType.StoredProcedure).FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
+                var result = await cn.QueryAsync<ArtistModel>("GetArtistById", parameter, commandType: CommandType.StoredProcedure);
+                return result.FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
             }
         }
 
-        public static ArtistModel? GetArtistByName(ArtistModel artist)
+        public static async Task<ArtistModel>? GetArtistByNameAsync(ArtistModel artist)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>($"SELECT * FROM Artist WHERE Name = '{artist.Name}'").FirstOrDefault() ?? new ArtistModel { Name = null };
+                var result = await cn.QueryAsync<ArtistModel>($"SELECT * FROM Artist WHERE Name = '{artist.Name}'");
+                return result.FirstOrDefault() ?? new ArtistModel { Name = null };
             }
         }
 
-        public static ArtistModel? GetArtistByNameSP(ArtistModel artist)
+        public static async Task<ArtistModel>? GetArtistByNameSPAsync(ArtistModel artist)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("@_name", artist.Name);
 
-                return cn.Query<ArtistModel>("GetArtistByName", parameter, commandType: CommandType.StoredProcedure).FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
+                var result = await cn.QueryAsync<ArtistModel>("GetArtistByName", parameter, commandType: CommandType.StoredProcedure);
+                return result.FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
             }
         }
         public static ArtistModel? GetArtistByFirstLastName(ArtistModel artist)
@@ -90,20 +96,20 @@ namespace DapperDAL
             }
         }
 
-        public static int UpdateArtist(ArtistModel artist)
+        public static async Task<int> UpdateArtistAsync(ArtistModel artist)
         {
             var i = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 artist.Name = !string.IsNullOrEmpty(artist.FirstName) ? $"{artist.FirstName} {artist.LastName}" : artist.LastName;
 
-                i = cn.Execute("UPDATE Artist SET FirstName = @FirstName, LastName = @LastName, Name = @Name, Biography = @Biography WHERE ArtistId = @ArtistId", artist);
+                i = await cn.ExecuteAsync("UPDATE Artist SET FirstName = @FirstName, LastName = @LastName, Name = @Name, Biography = @Biography WHERE ArtistId = @ArtistId", artist);
             }
 
             return i;
         }
 
-        public static object UpdateArtistSP(ArtistModel artist)
+        public static async Task<int> UpdateArtistSPAsync(ArtistModel artist)
         {
             var artistId = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -120,15 +126,15 @@ namespace DapperDAL
                 parameter.Add("_name", artist.Name);
                 parameter.Add("_biography", artist.Biography);
 
-                cn.Execute("UpdateArtistById", parameter, commandType: CommandType.StoredProcedure);
+                await cn.ExecuteAsync("UpdateArtistById", parameter, commandType: CommandType.StoredProcedure);
 
-                var foundArtist = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
+                var foundArtist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
                 artistId = foundArtist?.ArtistId ?? 0;
             }
             return artistId;
         }
 
-        public static int AddArtist(ArtistModel artist)
+        public static async Task<int> AddArtistAsync(ArtistModel artist)
         {
             var artistId = 0;
 
@@ -136,17 +142,17 @@ namespace DapperDAL
             {
                 artist.Name = !string.IsNullOrEmpty(artist.FirstName) ? $"{artist.FirstName} {artist.LastName}" : artist.LastName;
 
-                var foundArtist = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
+                var foundArtist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
                 if (foundArtist != null)
                 {
                     artistId = 9999;
                 }
                 else
                 {
-                    var number = cn.Execute("INSERT INTO Artist (FirstName, LastName, Name, Biography) VALUES (@FirstName, @LastName, @Name, @Biography)", artist);
+                    var number = await cn.ExecuteAsync("INSERT INTO Artist (FirstName, LastName, Name, Biography) VALUES (@FirstName, @LastName, @Name, @Biography)", artist);
                     if (number == 1)
                     {
-                        foundArtist = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
+                        foundArtist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
                         artistId = foundArtist?.ArtistId ?? 0;
                     }
                 }
@@ -155,7 +161,7 @@ namespace DapperDAL
             return artistId;
         }
 
-        public static int AddArtistSP(ArtistModel artist)
+        public static async Task<int> AddArtistSPAsync(ArtistModel artist)
         {
 
             var artistId = 0;
@@ -166,7 +172,7 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var foundArtist = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
+                var foundArtist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
                 if (foundArtist != null)
                 {
                     artistId = 9999;
@@ -180,9 +186,9 @@ namespace DapperDAL
                     parameters.Add("@_name", artist.Name);
                     parameters.Add("@_biography", artist.Biography);
 
-                    var result = cn.Execute("CreateArtist", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await cn.ExecuteAsync("CreateArtist", parameters, commandType: CommandType.StoredProcedure);
 
-                    foundArtist = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
+                    foundArtist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("SELECT * FROM Artist WHERE Name LIKE @Name", artist);
                     artistId = foundArtist?.ArtistId ?? 0;
                 }
             }

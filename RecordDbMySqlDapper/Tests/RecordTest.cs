@@ -16,52 +16,54 @@ namespace RecordDbMySqlDapper.Tests
     public class RecordTest
     {
         // see GetArtistRecordsMultipleTables() for a better version.
-        internal static void GetRecordList()
-        {
-            var artists = _ad.GetArtists();
-            var records = _rd.GetRecords();
+        // TODO: Change to an Async method
+        //internal static void GetRecordList()
+        //{
+        //    var artists = _ad.GetArtists();
+        //    var records = _rd.GetRecords();
 
-            foreach (var artist in artists)
-            {
-                Console.WriteLine($"{artist.Name}:\n");
+        //    foreach (var artist in artists)
+        //    {
+        //        Console.WriteLine($"{artist.Name}:\n");
 
-                var ar = from r in records
-                         where artist.ArtistId == r.ArtistId
-                         orderby r.Recorded descending
-                         select r;
+        //        var ar = from r in records
+        //                 where artist.ArtistId == r.ArtistId
+        //                 orderby r.Recorded descending
+        //                 select r;
 
-                foreach (var rec in ar)
-                {
-                    Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
-                }
+        //        foreach (var rec in ar)
+        //        {
+        //            Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
+        //        }
 
-                Console.WriteLine();
-            }
-        }
+        //        Console.WriteLine();
+        //    }
+        //}
 
         // see GetArtistRecordsMultipleTablesSP() for a better version.
-        internal static void GetRecordListSP()
-        {
-            var artists = _ad.GetArtistsSP();
-            var records = _rd.GetRecordsSP();
+        // TODO: Change to an Async method
+        //internal static void GetRecordListSP()
+        //{
+        //    var artists = _ad.GetArtistsSP();
+        //    var records = _rd.GetRecordsSP();
 
-            foreach (var artist in artists)
-            {
-                Console.WriteLine($"{artist.Name}:\n");
+        //    foreach (var artist in artists)
+        //    {
+        //        Console.WriteLine($"{artist.Name}:\n");
 
-                var ar = from r in records
-                         where artist.ArtistId == r.ArtistId
-                         orderby r.Recorded descending
-                         select r;
+        //        var ar = from r in records
+        //                 where artist.ArtistId == r.ArtistId
+        //                 orderby r.Recorded descending
+        //                 select r;
 
-                foreach (var rec in ar)
-                {
-                    Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
-                }
+        //        foreach (var rec in ar)
+        //        {
+        //            Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
+        //        }
 
-                Console.WriteLine();
-            }
-        }
+        //        Console.WriteLine();
+        //    }
+        //}
 
         internal static void GetTotalNumberOfBlurays()
         {
@@ -111,21 +113,22 @@ namespace RecordDbMySqlDapper.Tests
             Console.WriteLine($"Total number of Discs: {total}");
         }
 
-        internal static void GetRecordsByYear(int year)
-        {
-            var records = _rd.GetRecordsByYear(year);
-            if (records.Count == 0)
-            {
-                Console.WriteLine($"No records found for {year}");
-            }
-            else
-            {
-                foreach (var record in records)
-                {
-                    PrintArtistRecord(record);
-                }
-            }
-        }
+        // TODO: Change to an Async method
+        //internal static void GetRecordsByYear(int year)
+        //{
+        //    var records = _rd.GetRecordsByYear(year);
+        //    if (records.Count == 0)
+        //    {
+        //        Console.WriteLine($"No records found for {year}");
+        //    }
+        //    else
+        //    {
+        //        foreach (var record in records)
+        //        {
+        //            PrintArtistRecord(record);
+        //        }
+        //    }
+        //}
 
         internal static void GetRecordsByYearSP(int year)
         {
@@ -144,43 +147,45 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        internal static void GetRecordsByArtistId(int artistId)
-        {
-            var artist = _ad.GetArtistById(artistId);
+        // TODO: Change to an Async method
+        //internal static void GetRecordsByArtistId(int artistId)
+        //{
+        //    var artist = _ad.GetArtistById(artistId);
 
-            if (artist is ArtistModel)
-            {
-                _at.PrintArtist(artist);
+        //    if (artist is ArtistModel)
+        //    {
+        //        _at.PrintArtist(artist);
 
-                Console.WriteLine("\n----------------------------\n");
+        //        Console.WriteLine("\n----------------------------\n");
 
-                var records = _rd.GetRecordsByArtistId(artistId);
+        //        var records = _rd.GetRecordsByArtistId(artistId);
 
-                foreach (var record in records)
-                {
-                    PrintRecord(record);
-                }
-            }
-        }
+        //        foreach (var record in records)
+        //        {
+        //            PrintRecord(record);
+        //        }
+        //    }
+        //}
 
-        internal static void GetRecordsByArtistIdSP(int artistId)
-        {
-            var artist = _ad.GetArtistByIdSP(artistId);
+        // TODO: Change to an Async method
+        //internal static void GetRecordsByArtistIdSP(int artistId)
+        //{
+        //    var artist = _ad.GetArtistByIdSP(artistId);
 
-            if (artist is ArtistModel)
-            {
-                _at.PrintArtist(artist);
+        //    if (artist is ArtistModel)
+        //    {
+        //        _at.PrintArtist(artist);
 
-                Console.WriteLine("\n----------------------------\n");
+        //        Console.WriteLine("\n----------------------------\n");
 
-                var records = _rd.GetRecordsByArtistIdSP(artistId);
+        //        var records = _rd.GetRecordsByArtistIdSP(artistId);
 
-                foreach (var record in records)
-                {
-                    PrintRecord(record);
-                }
-            }
-        }
+        //        foreach (var record in records)
+        //        {
+        //            PrintRecord(record);
+        //        }
+        //    }
+        //}
 
         internal static void GetRecordsByArtistIdMultipleTables(int artistId)
         {
@@ -250,69 +255,74 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        internal static void GetRecordByName(string name)
-        {
-            // Note: you can use %% to get a partial name. 
-            RecordModel record = new()
-            {
-                Name = $"%{name}%"
-            };
+        // TODO: Change to an Async method
+        //internal static void GetRecordByName(string name)
+        //{
+        //    // Note: you can use %% to get a partial name. 
+        //    RecordModel record = new()
+        //    {
+        //        Name = $"%{name}%"
+        //    };
 
-            var newRecord = _rd.GetRecordByName(record);
+        //    var newRecord = _rd.GetRecordByName(record);
 
-            PrintArtistRecord(newRecord);
-        }
+        //    PrintArtistRecord(newRecord);
+        //}
 
-        internal static void GetRecordByNameSP(string name)
-        {
-            // Note: you can use %% to get a partial name. 
-            RecordModel record = new()
-            {
-                Name = $"%{name}%"
-            };
+        // TODO: Change to an Async method
+        //internal static void GetRecordByNameSP(string name)
+        //{
+        //    // Note: you can use %% to get a partial name. 
+        //    RecordModel record = new()
+        //    {
+        //        Name = $"%{name}%"
+        //    };
 
-            var newRecord = _rd.GetRecordByNameSP(record);
+        //    var newRecord = _rd.GetRecordByNameSP(record);
 
-            PrintArtistRecord(newRecord);
-        }
+        //    PrintArtistRecord(newRecord);
+        //}
 
-        internal static void GetRecordById(int recordId)
-        {
-            var record = _rd.GetRecordById(recordId);
+        // TODO: Change to an Async method
+        //internal static void GetRecordById(int recordId)
+        //{
+        //    var record = _rd.GetRecordById(recordId);
 
-            if (record.RecordId > 0)
-            {
-                PrintArtistRecord(record);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Record not found!");
-            }
-        }
+        //    if (record.RecordId > 0)
+        //    {
+        //        PrintArtistRecord(record);
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("ERROR: Record not found!");
+        //    }
+        //}
 
-        internal static void GetRecordByIdSP(int recordId)
-        {
-            var record = _rd.GetRecordByIdSP(recordId);
+        // TODO: Change to an Async method
+        //internal static void GetRecordByIdSP(int recordId)
+        //{
+        //    var record = _rd.GetRecordByIdSP(recordId);
 
-            if (record.RecordId > 0)
-            {
-                PrintArtistRecord(record);
-            }
-            else
-            {
-                Console.WriteLine("ERROR: Record not found!");
-            }
-        }
+        //    if (record.RecordId > 0)
+        //    {
+        //        PrintArtistRecord(record);
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("ERROR: Record not found!");
+        //    }
+        //}
 
-        internal static void GetAllRecords()
-        {
-            var records = _rd.GetRecords();
+        // TODO: Change to an Async method
+        //internal static void GetAllRecords()
+        //{
+        //    var records = _rd.GetRecords();
 
-            foreach (var record in records)
-            {
-                PrintArtistRecord(record);
-            }
-        }
+        //    foreach (var record in records)
+        //    {
+        //        PrintArtistRecord(record);
+        //    }
+        //}
 
         internal static void GetAllRecordsSP()
         {
@@ -325,27 +335,28 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        internal static void GetArtistById(int artistId)
-        {
-            var artist = _ad.GetArtistById(artistId);
+        // TODO: Change to an Async method
+        //internal static void GetArtistById(int artistId)
+        //{
+        //    var artist = _ad.GetArtistById(artistId);
 
-            if (artist is ArtistModel)
-            {
-                _at.PrintArtist(artist);
+        //    if (artist is ArtistModel)
+        //    {
+        //        _at.PrintArtist(artist);
 
-                var rec = new RecordModel()
-                {
-                    ArtistId = artistId
-                };
+        //        var rec = new RecordModel()
+        //        {
+        //            ArtistId = artistId
+        //        };
 
-                var records = _rd.GetRecordsByArtistId(rec.ArtistId);
+        //        var records = _rd.GetRecordsByArtistId(rec.ArtistId);
 
-                foreach (var record in records)
-                {
-                    PrintArtistRecord(record);
-                }
-            }
-        }
+        //        foreach (var record in records)
+        //        {
+        //            PrintArtistRecord(record);
+        //        }
+        //    }
+        //}
 
         internal static void PrintRecord(RecordModel record, bool review = false)
         {
@@ -361,13 +372,14 @@ namespace RecordDbMySqlDapper.Tests
         }
 
         // TODO: refactor this to remove multiple Db calls.
-        internal static void PrintArtistRecord(RecordModel record)
-        {
-            var artist = _ad.GetArtistById(record.ArtistId);
+        // TODO: Change to an Async method
+        //internal static void PrintArtistRecord(RecordModel record)
+        //{
+        //    var artist = _ad.GetArtistById(record.ArtistId);
 
-            var message = artist is ArtistModel ? $"{artist.Name} - {record.Recorded}: {record.Name} - {record.Field}." : $"Artist or record not found!\n\n";
-            Console.WriteLine(message);
-        }
+        //    var message = artist is ArtistModel ? $"{artist.Name} - {record.Recorded}: {record.Name} - {record.Field}." : $"Artist or record not found!\n\n";
+        //    Console.WriteLine(message);
+        //}
 
         internal static void CreateRecord(int artistId)
         {
@@ -568,16 +580,17 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        internal static void GetArtistNumberOfRecords(int artistId)
-        {
-            var artist = _ad.GetArtistById(artistId);
-            var discs = _rd.GetArtistNumberOfRecords(artistId);
+        // TODO: Change to an Async method
+        //internal static void GetArtistNumberOfRecords(int artistId)
+        //{
+        //    var artist = _ad.GetArtistById(artistId);
+        //    var discs = _rd.GetArtistNumberOfRecords(artistId);
 
-            if (artist is ArtistModel)
-            {
-                Console.WriteLine($"{artist.Name} has {discs} discs.");
-            }
-        }
+        //    if (artist is ArtistModel)
+        //    {
+        //        Console.WriteLine($"{artist.Name} has {discs} discs.");
+        //    }
+        //}
 
         internal static void GetArtistNumberOfRecordsSP(int artistId)
         {

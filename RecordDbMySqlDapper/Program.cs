@@ -6,26 +6,26 @@ namespace RecordDbMySqlDapper
 {
     internal class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             #region Artist Methods
-            // _at.GetAllArtists();
-            // _at.GetAllArtistsSP();
+            // await _at.GetAllArtistsAsync();
+            // await _at.GetAllArtistsSPAsync();
 
-            // _at.CreateArtist();
+            // await _at.CreateArtistAsync();
 
-            // _at.CreateArtistSP();
+            // await _at.CreateArtistSPAsync();
 
-            // _at.GetArtistByName("Traffic");
-            // _at.GetArtistByNameSP("Bob Dylan");
+            // await _at.GetArtistByNameAsync("Traffic");
+            // await _at.GetArtistByNameSPAsync("Bob Dylan");
 
-            // _at.UpdateArtist(837);
-            // _at.UpdateArtistSP(837);
+            // await _at.UpdateArtistAsync(837);
+            // await _at.UpdateArtistSPAsync(827);
 
-            // _at.GetArtistById(114);
-            // _at.GetArtistByIdSP(114);
+            // await _at.GetArtistByIdAsync(114);
+            // await _at.GetArtistByIdSPAsync(114);
 
-            // _at.DeleteArtist(837);
+            _at.DeleteArtist(837);
             // _at.DeleteArtistSP(838);
 
             // _at.GetBiography(114);
@@ -46,7 +46,7 @@ namespace RecordDbMySqlDapper
 
             #region Record Methods
             // _rt.GetAllRecords();
-            _rt.GetAllRecordsSP();
+            // _rt.GetAllRecordsSP();
 
             // _rt.CreateRecord(838);
             // _rt.CreateRecordSP(827);
@@ -76,7 +76,7 @@ namespace RecordDbMySqlDapper
             // _rt.GetRecordsByYearSP(1974);
 
             // _rt.GetTotalNumberOfCDs(); 
-            _rt.GetTotalNumberOfCDsSP(); 
+            // _rt.GetTotalNumberOfCDsSP(); 
 
             // _rt.GetTotalNumberOfDiscs(); 
             // _rt.GetTotalNumberOfDiscsSP(); 
