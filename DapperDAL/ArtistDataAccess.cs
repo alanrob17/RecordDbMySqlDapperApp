@@ -76,15 +76,16 @@ namespace DapperDAL
                 return result.FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
             }
         }
-        public static ArtistModel? GetArtistByFirstLastName(ArtistModel artist)
+        public static async Task<ArtistModel>? GetArtistByFirstLastNameAsync(ArtistModel artist)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>("SELECT * FROM Artist WHERE FirstName LIKE @FirstName AND LastName LIKE @LastName", artist).FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
+                var result = cn.QueryFirstOrDefault<ArtistModel>("SELECT * FROM Artist WHERE FirstName LIKE @FirstName AND LastName LIKE @LastName", artist);
+                return result ?? new ArtistModel { ArtistId = 0 };
             }
         }
 
-        public static ArtistModel? GetArtistByFirstLastNameSP(ArtistModel artist)
+        public static async Task<ArtistModel>? GetArtistByFirstLastNameSPAsync(ArtistModel artist)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
@@ -92,7 +93,8 @@ namespace DapperDAL
                 parameter.Add("_firstName", artist.FirstName);
                 parameter.Add("_lastName", artist.LastName);
 
-                return cn.Query<ArtistModel>("GetArtistIdByNames", parameter, commandType: CommandType.StoredProcedure).FirstOrDefault() ?? new ArtistModel { ArtistId = 0 };
+                var result = await cn.QueryFirstOrDefaultAsync<ArtistModel>("GetArtistIdByNames", parameter, commandType: CommandType.StoredProcedure);
+                return result ?? new ArtistModel { ArtistId = 0 };
             }
         }
 
@@ -196,25 +198,25 @@ namespace DapperDAL
             return artistId;
         }
 
-        public static int DeleteArtist(int artistId)
+        public static async Task<int> DeleteArtistAsync(int artistId)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 // Delete records before deleting artist
-                var records = cn.Query<RecordModel>($"SELECT * FROM Record WHERE artistId = {artistId}", new DynamicParameters());
+                var records = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE artistId = {artistId}", new DynamicParameters());
                 foreach (var record in records)
                 {
-                    cn.Execute($"DELETE FROM Record WHERE ArtistId={artistId}");
+                    await cn.ExecuteAsync($"DELETE FROM Record WHERE ArtistId={artistId}");
                 }
 
-                result = cn.Execute($"DELETE FROM Artist WHERE ArtistId={artistId}");
+                result = await cn.ExecuteAsync($"DELETE FROM Artist WHERE ArtistId={artistId}");
             }
 
             return result;
         }
 
-        public static int DeleteArtistSP(int artistId)
+        public static async Task<int> DeleteArtistSPAsync(int artistId)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -222,21 +224,20 @@ namespace DapperDAL
                 var parameters = new DynamicParameters();
                 parameters.Add("_artistId", artistId);
 
-                result = (int)cn.Execute("DeleteArtistById", parameters, commandType: CommandType.StoredProcedure);
+                result = (int)await cn.ExecuteAsync("DeleteArtistById", parameters, commandType: CommandType.StoredProcedure);
             }
             return result;
         }
 
-        /// <summary>
-        /// Get biography from the current Artist Id.
-        /// </summary>
-        public static string GetBiography(int artistId)
+        public static async Task<string> GetBiographyAsync(int artistId)
         {
             var biography = new StringBuilder();
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var artist = cn.Query<ArtistModel>("SELECT * FROM Artist WHERE artistId = @artistId", new { artistId }).FirstOrDefault();
+                var result = await cn.QueryAsync<ArtistModel>("SELECT * FROM Artist WHERE artistId = @artistId", new { artistId });
+                var artist = result.FirstOrDefault();
+
                 if (artist is ArtistModel)
                 {
                     biography.Append($"Name: {artist.Name}\n");
@@ -247,10 +248,7 @@ namespace DapperDAL
             return biography.ToString();
         }
 
-        /// <summary>
-        /// Get biography from the current Artist Id.
-        /// </summary>
-        public static string GetBiographySP(int artistId)
+        public static async Task<string> GetBiographySPAsync(int artistId)
         {
             var biography = new StringBuilder();
 
@@ -259,7 +257,7 @@ namespace DapperDAL
                 var parameters = new DynamicParameters();
                 parameters.Add("_artistId", artistId);
 
-                var artist = cn.QueryFirstOrDefault<ArtistModel>("GetArtistById", parameters, commandType: CommandType.StoredProcedure);
+                var artist = await cn.QueryFirstOrDefaultAsync<ArtistModel>("GetArtistById", parameters, commandType: CommandType.StoredProcedure);
                 if (artist is ArtistModel)
                 {
                     biography.Append($"Name: {artist.Name}\n");
@@ -270,35 +268,37 @@ namespace DapperDAL
             return biography.ToString();
         }
 
-        public static List<ArtistModel> GetArtistsWithNoBio()
+        public static async Task<List<ArtistModel>> GetArtistsWithNoBioAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>("SELECT * FROM Artist WHERE Biography IS NULL;").ToList();
+                var result = await cn.QueryAsync<ArtistModel>("SELECT * FROM Artist WHERE Biography IS NULL;");
+                return result.ToList();
             }
         }
 
-        public static List<ArtistModel> GetArtistsWithNoBioSP()
+        public static async Task<List<ArtistModel>> GetArtistsWithNoBioSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<ArtistModel>("GetArtistsWithNoBio", commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<ArtistModel>("GetArtistsWithNoBio", commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
-        public static int NoBiographyCount()
+        public static async Task<int> NoBiographyCountAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("SELECT Count(*) FROM Artist WHERE Biography IS NULL;");
+                return await cn.ExecuteScalarAsync<int>("SELECT Count(*) FROM Artist WHERE Biography IS NULL;");
             }
         }
 
-        public static int NoBiographyCountSP()
+        public static async Task<int> NoBiographyCountSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("GetNoBiographyCount", commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetNoBiographyCount", commandType: CommandType.StoredProcedure);
             }
         }
 

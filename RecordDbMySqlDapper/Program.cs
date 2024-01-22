@@ -13,43 +13,43 @@ namespace RecordDbMySqlDapper
             // await _at.GetAllArtistsSPAsync();
 
             // await _at.CreateArtistAsync();
-
             // await _at.CreateArtistSPAsync();
 
             // await _at.GetArtistByNameAsync("Traffic");
             // await _at.GetArtistByNameSPAsync("Bob Dylan");
 
             // await _at.UpdateArtistAsync(837);
-            // await _at.UpdateArtistSPAsync(827);
+            // await _at.UpdateArtistSPAsync(838);
 
             // await _at.GetArtistByIdAsync(114);
             // await _at.GetArtistByIdSPAsync(114);
 
-            _at.DeleteArtist(837);
-            // _at.DeleteArtistSP(838);
+            // await _at.DeleteArtistAsync(827);
+            // await _at.DeleteArtistSPAsync(827);
 
-            // _at.GetBiography(114);
-            // _at.GetBiographySP(114);
+            // await _at.GetBiographyAsync(114);
+            // await _at.GetBiographySPAsync(114);
 
-            // _at.ArtistHtml(114);
-            // _at.ArtistHtmlSP(114);
+            // await _at.ArtistHtmlAsync(114);
+            // await _at.ArtistHtmlSPAsync(114);
 
-            // _at.GetArtistId("Bob", "Dylan");
-            // _at.GetArtistIdSP("Bob", "Dylan");
+            // await _at.GetArtistIdAsync("Bob", "Dylan");
+            // await _at.GetArtistIdSPAsync("Bob", "Dylan");
 
-            // _at.GetArtistsWithNoBio();
-            // _at.GetArtistsWithNoBioSP();
+            // await _at.GetArtistsWithNoBioAsync();
+            // await _at.GetArtistsWithNoBioSPAsync();
 
-            // _at.GetNoBiographyCount();
-            // _at.GetNoBiographyCountSP();
+            // await _at.GetNoBiographyCountAsync();
+            // await _at.GetNoBiographyCountSPAsync();
+            
             #endregion
 
             #region Record Methods
-            // _rt.GetAllRecords();
-            // _rt.GetAllRecordsSP();
+            //_rt.GetAllRecords();
+            //_rt.GetAllRecordsSP();
 
-            // _rt.CreateRecord(838);
-            // _rt.CreateRecordSP(827);
+            // await _rt.CreateRecordAsync(835);
+            // await _rt.CreateRecordSPAsync(827);
 
             // _rt.GetRecordById(133);
             // _rt.GetRecordByIdSP(133);
@@ -105,7 +105,7 @@ namespace RecordDbMySqlDapper
             // _rt.CountDiscsSP("CD");
 
             // _rt.CountDiscs("R");
-                        
+
             // _rt.CountDiscsSP("R");
 
             // _rt.GetArtistRecordEntity(2196);

@@ -42,10 +42,10 @@ namespace RecordDbMySqlDapper.Tests
         {
             ArtistModel artist = new()
             {
-                FirstName = "Ethan James",
+                FirstName = "Alan",
                 LastName = "Robson",
                 Name = "",
-                Biography = "Ethan is a Jazz Fusion artist."
+                Biography = "Alan is a Jazz Fusion artist."
             };
 
             var artistId = await _ad.AddArtistSPAsync(artist);
@@ -127,9 +127,9 @@ namespace RecordDbMySqlDapper.Tests
             ArtistModel artist = new()
             {
                 ArtistId = artistId,
-                FirstName = "Alan",
+                FirstName = "Ethan",
                 LastName = "Robson",
-                Biography = "Alan is an Australian Hip-Hop superstar."
+                Biography = "Ethan is an Australian Techno superstar."
             };
 
             var result = await _ad.UpdateArtistSPAsync(artist);
@@ -155,112 +155,110 @@ namespace RecordDbMySqlDapper.Tests
             await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void DeleteArtist(int artistId)
+        internal static async Task DeleteArtistAsync(int artistId)
         {
-            int result = _ad.DeleteArtist(artistId);
+            int result = await _ad.DeleteArtistAsync(artistId);
             var message = result > 0 ? "Artist deleted." : "ERROR: Artist not deleted!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void DeleteArtistSP(int artistId)
+        internal static async Task DeleteArtistSPAsync(int artistId)
         {
-            int result = _ad.DeleteArtistSP(artistId);
+            int result = await _ad.DeleteArtistSPAsync(artistId);
             var message = result > 0 ? "Artist deleted." : "ERROR: Artist not deleted!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void GetBiography(int artistid)
+        internal static async Task GetBiographyAsync(int artistid)
         {
-            var biography = _ad.GetBiography(artistid);
+            var biography = await _ad.GetBiographyAsync(artistid);
 
             if (biography.Length > 5)
             {
-                Console.WriteLine(biography);
+                await Console.Out.WriteLineAsync(biography);
             }
         }
 
-        internal static void GetBiographySP(int artistid)
+        internal static async Task GetBiographySPAsync(int artistid)
         {
-            var biography = _ad.GetBiographySP(artistid);
+            var biography = await _ad.GetBiographySPAsync(artistid);
 
             if (biography.Length > 5)
             {
-                Console.WriteLine(biography);
+                await Console.Out.WriteLineAsync(biography);
             }
         }
 
-        // TODO: Change to an Async method
-        //internal static void ArtistHtml(int artistId)
-        //{
-        //    var artist = _ad.GetArtistById(artistId);
-        //    var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
+        internal static async Task ArtistHtmlAsync(int artistId)
+        {
+            var artist = await _ad.GetArtistByIdAsync(artistId);
+            var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
 
-        //    Console.WriteLine(message);
-        //}
+            Console.WriteLine(message);
+        }
 
-        // TODO: Change to an Async method
-        //internal static void ArtistHtmlSP(int artistId)
-        //{
-        //    var artist = _ad.GetArtistByIdSP(artistId);
-        //    var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
+        internal static async Task ArtistHtmlSPAsync(int artistId)
+        {
+            var artist = await _ad.GetArtistByIdSPAsync(artistId);
+            var message = artist?.ArtistId > 0 ? $"<p><strong>Id:</strong> {artist.ArtistId}</p>\n<p><strong>Name:</strong> {artist.FirstName} {artist.LastName}</p>\n<p><strong>Biography:</strong></p>\n<div>{artist.Biography}</p></div>" : "ERROR: Artist not found!";
 
-        //    Console.WriteLine(message);
-        //}
+            await Console.Out.WriteLineAsync(message);
+        }
 
-        internal static void GetArtistId(string firstName, string lastName)
+        internal static async Task GetArtistIdAsync(string firstName, string lastName)
         {
             var artistToFind = new ArtistModel { FirstName = firstName, LastName = lastName };
 
-            var artist = _ad.GetArtistByFirstLastName(artistToFind);
+            var artist = await _ad.GetArtistByFirstLastNameAsync(artistToFind);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId} - {artist.FirstName} {artist.LastName}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
 
         }
 
-        internal static void GetArtistIdSP(string firstName, string lastName)
+        internal static async Task GetArtistIdSPAsync(string firstName, string lastName)
         {
             var artistToFind = new ArtistModel { FirstName = firstName, LastName = lastName };
 
-            var artist = _ad.GetArtistByFirstLastNameSP(artistToFind);
+            var artist = await _ad.GetArtistByFirstLastNameSPAsync(artistToFind);
             var message = artist?.ArtistId > 0 ? $"Id: {artist.ArtistId}." : "ERROR: Artist not found!";
 
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
 
         }
 
-        internal static void GetArtistsWithNoBio()
+        internal static async Task GetArtistsWithNoBioAsync()
         {
-            List<ArtistModel> artists = _ad.GetArtistsWithNoBio();
+            List<ArtistModel> artists = await _ad.GetArtistsWithNoBioAsync();
 
             foreach (var artist in artists)
             {
-                Console.WriteLine($"Id: {artist.ArtistId} - {artist.Name}");
+                await Console.Out.WriteLineAsync($"Id: {artist.ArtistId} - {artist.Name}");
             }
         }
 
-        internal static void GetArtistsWithNoBioSP()
+        internal static async Task GetArtistsWithNoBioSPAsync()
         {
-            List<ArtistModel> artists = _ad.GetArtistsWithNoBioSP();
+            List<ArtistModel> artists = await _ad.GetArtistsWithNoBioSPAsync();
 
             foreach (var artist in artists)
             {
-                Console.WriteLine($"Id: {artist.ArtistId} - {artist.Name}");
+                await Console.Out.WriteLineAsync($"Id: {artist.ArtistId} - {artist.Name}");
             }
         }
 
-        internal static void GetNoBiographyCount()
+        internal static async Task GetNoBiographyCountAsync()
         {
-            var number = _ad.NoBiographyCount();
+            var number = await _ad.NoBiographyCountAsync();
 
-            Console.WriteLine($"The total number of artists with missing biographies: {number}.");
+            await Console.Out.WriteLineAsync($"The total number of artists with missing biographies: {number}.");
         }
 
-        internal static void GetNoBiographyCountSP()
+        internal static async Task GetNoBiographyCountSPAsync()
         {
-            var number = _ad.NoBiographyCountSP();
+            var number = await _ad.NoBiographyCountSPAsync();
 
-            Console.WriteLine($"The total number of artists with missing biographies: {number}.");
+            await Console.Out.WriteLineAsync($"The total number of artists with missing biographies: {number}.");
         }
 
         internal static async Task PrintArtist(ArtistModel artist)

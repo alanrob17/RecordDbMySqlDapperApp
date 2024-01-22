@@ -230,19 +230,19 @@ namespace DapperDAL
             return result;
         }
 
-        public static int AddRecord(RecordModel record)
+        public static async Task<int> AddRecordAsync(RecordModel record)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var query = @"INSERT INTO Record (ArtistId, Name, Field, Recorded, Label, Pressing, Rating, Discs, Media, Bought, Cost, Review) VALUES (@ArtistId, @Name, @Field, @Recorded, @Label, @Pressing, @Rating, @Discs, @Media, @Bought, @Cost, @Review);";
-                result = cn.Execute(query, record);
+                result = await cn.ExecuteAsync(query, record);
             }
 
             return result;
         }
 
-        public static object AddRecordSP(RecordModel record)
+        public static async Task<int> AddRecordSPAsync(RecordModel record)
         {
             var recordId = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -262,7 +262,7 @@ namespace DapperDAL
                 parameter.Add("_cost", record.Cost);
                 parameter.Add("_review", record.Review);
 
-                cn.Execute("CreateRecord", parameter, commandType: CommandType.StoredProcedure);
+                await cn.ExecuteAsync("CreateRecord", parameter, commandType: CommandType.StoredProcedure);
 
                 recordId = parameter.Get<int>("_recordId");
             }

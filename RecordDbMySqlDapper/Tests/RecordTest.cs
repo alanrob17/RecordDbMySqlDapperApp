@@ -381,7 +381,7 @@ namespace RecordDbMySqlDapper.Tests
         //    Console.WriteLine(message);
         //}
 
-        internal static void CreateRecord(int artistId)
+        internal static async Task CreateRecordAsync(int artistId)
         {
             RecordModel record = new()
             {
@@ -399,12 +399,12 @@ namespace RecordDbMySqlDapper.Tests
                 Review = "This is James\'s first album."
             };
 
-            var result = _rd.AddRecord(record);
+            var result = await _rd.AddRecordAsync(record);
             var message = result > 0 ? $"Record added to database." : "ERROR: Record not added to database.";
             Console.WriteLine(message);
         }
 
-        internal static void CreateRecordSP(int artistId)
+        internal static async Task CreateRecordSPAsync(int artistId)
         {
             RecordModel record = new()
             {
@@ -422,7 +422,7 @@ namespace RecordDbMySqlDapper.Tests
                 Review = "This is Ethans\'s second album."
             };
 
-            var recordId = _rd.AddRecordSP(record);
+            var recordId = await _rd.AddRecordSPAsync(record);
 
             Console.WriteLine(recordId);
         }
