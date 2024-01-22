@@ -17,19 +17,21 @@ namespace DapperDAL
 {
     public class RecordDataAccess
     {
-        public static List<RecordModel> GetRecords()
+        public static async Task<List<RecordModel>> GetRecordsAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>("SELECT * FROM Record ORDER BY Recorded DESC", new DynamicParameters()).ToList();
+                var result = await cn.QueryAsync<RecordModel>("SELECT * FROM Record ORDER BY Recorded DESC", new DynamicParameters());
+                return result.ToList();
             }
         }
 
-        public static List<dynamic> GetRecordsSP()
+        public static async Task<List<RecordModel>> GetRecordsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>("GetFullRecords", commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<RecordModel>("GetFullRecords", commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
@@ -155,22 +157,24 @@ namespace DapperDAL
             }
         }
 
-        public static RecordModel GetRecordById(int recordId)
+        public static async Task<RecordModel> GetRecordByIdAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>($"SELECT * FROM Record WHERE RecordId = {recordId}").FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                var result = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE RecordId = {recordId}");
+                return result.FirstOrDefault() ?? new RecordModel { RecordId = 0 };
             }
         }
 
-        public static RecordModel GetRecordByIdSP(int recordId)
+        public static async Task<RecordModel> GetRecordByIdSPAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_recordId", recordId);
 
-                return cn.Query<RecordModel>($"GetRecordById", parameter, commandType: CommandType.StoredProcedure).FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                var result = await cn.QueryAsync<RecordModel>($"GetRecordById", parameter, commandType: CommandType.StoredProcedure);
+                return result.FirstOrDefault() ?? new RecordModel { RecordId = 0 };
             }
         }
 

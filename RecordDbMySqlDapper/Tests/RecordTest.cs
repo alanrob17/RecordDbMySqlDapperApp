@@ -283,55 +283,51 @@ namespace RecordDbMySqlDapper.Tests
         //    PrintArtistRecord(newRecord);
         //}
 
-        // TODO: Change to an Async method
-        //internal static void GetRecordById(int recordId)
-        //{
-        //    var record = _rd.GetRecordById(recordId);
-
-        //    if (record.RecordId > 0)
-        //    {
-        //        PrintArtistRecord(record);
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("ERROR: Record not found!");
-        //    }
-        //}
-
-        // TODO: Change to an Async method
-        //internal static void GetRecordByIdSP(int recordId)
-        //{
-        //    var record = _rd.GetRecordByIdSP(recordId);
-
-        //    if (record.RecordId > 0)
-        //    {
-        //        PrintArtistRecord(record);
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("ERROR: Record not found!");
-        //    }
-        //}
-
-        // TODO: Change to an Async method
-        //internal static void GetAllRecords()
-        //{
-        //    var records = _rd.GetRecords();
-
-        //    foreach (var record in records)
-        //    {
-        //        PrintArtistRecord(record);
-        //    }
-        //}
-
-        internal static void GetAllRecordsSP()
+        internal static async Task GetRecordByIdAsync(int recordId)
         {
-            var records = _rd.GetRecordsSP();
+            var record = await _rd.GetRecordByIdAsync(recordId);
+
+            if (record.RecordId > 0)
+            {
+                await PrintArtistRecordAsync(record);
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync("ERROR: Record not found!");
+            }
+        }
+
+        internal static async Task GetRecordByIdSPAsync(int recordId)
+        {
+            var record = await _rd.GetRecordByIdSPAsync(recordId);
+
+            if (record.RecordId > 0)
+            {
+                await PrintArtistRecordAsync(record);
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync("ERROR: Record not found!");
+            }
+        }
+
+        internal static async Task GetAllRecordsAsync()
+        {
+            var records = await _rd.GetRecordsAsync();
 
             foreach (var record in records)
             {
-                var message = record != null ? $"{record.ArtistName} - {record.Recorded}: {record.Name} - {record.Field}." : $"Artist or record not found!\n\n"; 
-                Console.WriteLine(message);
+                await PrintArtistRecordAsync(record);
+            }
+        }
+
+        internal static async Task GetAllRecordsSPAsync()
+        {
+            var records = await _rd.GetRecordsSPAsync();
+
+            foreach (var record in records)
+            {
+                await PrintArtistRecordAsync(record);
             }
         }
 
@@ -372,14 +368,13 @@ namespace RecordDbMySqlDapper.Tests
         }
 
         // TODO: refactor this to remove multiple Db calls.
-        // TODO: Change to an Async method
-        //internal static void PrintArtistRecord(RecordModel record)
-        //{
-        //    var artist = _ad.GetArtistById(record.ArtistId);
+        internal static async Task PrintArtistRecordAsync(RecordModel record)
+        {
+            var artist = await _ad.GetArtistByIdAsync(record.ArtistId);
 
-        //    var message = artist is ArtistModel ? $"{artist.Name} - {record.Recorded}: {record.Name} - {record.Field}." : $"Artist or record not found!\n\n";
-        //    Console.WriteLine(message);
-        //}
+            var message = artist is ArtistModel ? $"{artist.Name} - {record.Recorded}: {record.Name} - {record.Field}." : $"Artist or record not found!\n\n";
+            await Console.Out.WriteLineAsync(message);
+        }
 
         internal static async Task CreateRecordAsync(int artistId)
         {
@@ -419,7 +414,7 @@ namespace RecordDbMySqlDapper.Tests
                 Media = "CD",
                 Bought = "2022-01-17",
                 Cost = 29.95m,
-                Review = "This is Ethans\'s second album."
+                Review = "This is Charley\'s second album."
             };
 
             var recordId = await _rd.AddRecordSPAsync(record);

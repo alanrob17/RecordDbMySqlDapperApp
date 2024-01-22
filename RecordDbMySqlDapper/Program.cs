@@ -45,17 +45,17 @@ namespace RecordDbMySqlDapper
             #endregion
 
             #region Record Methods
-            //_rt.GetAllRecords();
-            //_rt.GetAllRecordsSP();
+            // await _rt.GetAllRecordsAsync();
+            // await _rt.GetAllRecordsSPAsync();
 
             // await _rt.CreateRecordAsync(835);
-            // await _rt.CreateRecordSPAsync(827);
+            // await _rt.CreateRecordSPAsync(834);
 
-            // _rt.GetRecordById(133);
-            // _rt.GetRecordByIdSP(133);
+            // await _rt.GetRecordByIdAsync(133);
+            // await _rt.GetRecordByIdSPAsync(133);
 
-            // _rt.UpdateRecord(5258);
-            // _rt.UpdateRecordSP(5257);
+            _rt.UpdateRecord(5260);
+            _rt.UpdateRecordSP(5261);
 
             // _rt.DeleteRecord(5258);
             // _rt.DeleteRecordSP(5259);
