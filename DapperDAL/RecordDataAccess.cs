@@ -178,37 +178,39 @@ namespace DapperDAL
             }
         }
 
-        public static RecordModel GetRecordByName(RecordModel record)
+        public static async Task<RecordModel> GetRecordByNameAsync(RecordModel record)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>($"SELECT * FROM Record WHERE Name LIKE @Name", record).FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                var result = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE Name LIKE @Name", record);
+                return result.FirstOrDefault() ?? new RecordModel { RecordId = 0 };
             }
         }
 
-        public static RecordModel GetRecordByNameSP(RecordModel record)
+        public static async Task<RecordModel> GetRecordByNameSPAsync(RecordModel record)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_name", record.Name);
 
-                return cn.Query<RecordModel>($"GetRecordByName", parameter, commandType: CommandType.StoredProcedure).FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                var result = await cn.QueryAsync<RecordModel>($"GetRecordByName", parameter, commandType: CommandType.StoredProcedure);
+                return  result.FirstOrDefault() ?? new RecordModel { RecordId = 0 };
             }
         }
 
-        public static int UpdateRecord(RecordModel record)
+        public static async Task<int> UpdateRecordAsync(RecordModel record)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                result = cn.Execute("UPDATE Record SET Name = @Name, Field = @Field, Recorded = @Recorded, Label = @Label, Pressing = @Pressing, Rating = @Rating, Discs = @Discs, Media = @Media, Bought = @Bought, Cost = @Cost, Review = @Review WHERE RecordId = @RecordId", record);
+                result = await cn.ExecuteAsync("UPDATE Record SET Name = @Name, Field = @Field, Recorded = @Recorded, Label = @Label, Pressing = @Pressing, Rating = @Rating, Discs = @Discs, Media = @Media, Bought = @Bought, Cost = @Cost, Review = @Review WHERE RecordId = @RecordId", record);
             }
 
             return result;
         }
 
-        public static int UpdateRecordSP(RecordModel record)
+        public static async Task<int> UpdateRecordSPAsync(RecordModel record)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -227,7 +229,7 @@ namespace DapperDAL
                 parameter.Add("_cost", record.Cost);
                 parameter.Add("_review", record.Review);
 
-                cn.Execute("UpdateRecord", parameter, commandType: CommandType.StoredProcedure);
+                await cn.ExecuteAsync("UpdateRecord", parameter, commandType: CommandType.StoredProcedure);
 
                 result = parameter.Get<int>("_recordId");
             }
@@ -273,18 +275,18 @@ namespace DapperDAL
             return recordId;
         }
 
-        public static int DeleteRecord(int recordId)
+        public static async Task<int> DeleteRecordAsync(int recordId)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                result = cn.Execute($"DELETE FROM Record WHERE RecordId={recordId}");
+                result = await cn.ExecuteAsync($"DELETE FROM Record WHERE RecordId={recordId}");
             }
 
             return result;
         }
 
-        public static int DeleteRecordSP(int recordId)
+        public static async Task<int> DeleteRecordSPAsync(int recordId)
         {
             var result = 0;
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -292,7 +294,7 @@ namespace DapperDAL
                 var parameters = new DynamicParameters();
                 parameters.Add("_recordId", recordId);
 
-                result = (int)cn.Execute("DeleteRecordById", parameters, commandType: CommandType.StoredProcedure);
+                result = (int)await cn.ExecuteAsync("DeleteRecordById", parameters, commandType: CommandType.StoredProcedure);
             }
             return result;
         }

@@ -255,33 +255,31 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        // TODO: Change to an Async method
-        //internal static void GetRecordByName(string name)
-        //{
-        //    // Note: you can use %% to get a partial name. 
-        //    RecordModel record = new()
-        //    {
-        //        Name = $"%{name}%"
-        //    };
+        internal static async Task GetRecordByNameAsync(string name)
+        {
+            // Note: you can use %% to get a partial name. 
+            RecordModel record = new()
+            {
+                Name = $"%{name}%"
+            };
 
-        //    var newRecord = _rd.GetRecordByName(record);
+            var newRecord = await _rd.GetRecordByNameAsync(record);
 
-        //    PrintArtistRecord(newRecord);
-        //}
+            await PrintArtistRecordAsync(newRecord);
+        }
 
-        // TODO: Change to an Async method
-        //internal static void GetRecordByNameSP(string name)
-        //{
-        //    // Note: you can use %% to get a partial name. 
-        //    RecordModel record = new()
-        //    {
-        //        Name = $"%{name}%"
-        //    };
+        internal static async Task GetRecordByNameSPAsync(string name)
+        {
+            // Note: you can use %% to get a partial name. 
+            RecordModel record = new()
+            {
+                Name = $"%{name}%"
+            };
 
-        //    var newRecord = _rd.GetRecordByNameSP(record);
+            var newRecord = await _rd.GetRecordByNameSPAsync(record);
 
-        //    PrintArtistRecord(newRecord);
-        //}
+            await PrintArtistRecordAsync(newRecord);
+        }
 
         internal static async Task GetRecordByIdAsync(int recordId)
         {
@@ -396,7 +394,7 @@ namespace RecordDbMySqlDapper.Tests
 
             var result = await _rd.AddRecordAsync(record);
             var message = result > 0 ? $"Record added to database." : "ERROR: Record not added to database.";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
         internal static async Task CreateRecordSPAsync(int artistId)
@@ -419,25 +417,25 @@ namespace RecordDbMySqlDapper.Tests
 
             var recordId = await _rd.AddRecordSPAsync(record);
 
-            Console.WriteLine(recordId);
+            await Console.Out.WriteLineAsync(recordId.ToString());
         }
 
 
-        internal static void DeleteRecord(int recordId)
+        internal static async Task DeleteRecordAsync(int recordId)
         {
-            int result = _rd.DeleteRecord(recordId);
+            int result = await _rd.DeleteRecordAsync(recordId);
             var message = result > 0 ? "Record deleted." : "ERROR: Record not deleted!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void DeleteRecordSP(int recordId)
+        internal static async Task DeleteRecordSPAsync(int recordId)
         {
-            int result = _rd.DeleteRecordSP(recordId);
+            int result = await _rd.DeleteRecordSPAsync(recordId);
             var message = result > 0 ? "Record deleted." : "ERROR: Record not deleted!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void UpdateRecord(int recordId)
+        internal static async Task UpdateRecordAsync(int recordId)
         {
             RecordModel record = new()
             {
@@ -452,16 +450,16 @@ namespace RecordDbMySqlDapper.Tests
                 Media = "CD",
                 Bought = "2022-08-17",
                 Cost = 29.95m,
-                Review = "This is James\'s second album."
+                Review = "This is Charley\'s second album."
             };
 
-            var i = _rd.UpdateRecord(record);
+            var i = await _rd.UpdateRecordAsync(record);
 
             var message = i > 0 ? "Record updated." : "ERROR: Record not updated!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
-        internal static void UpdateRecordSP(int recordId)
+        internal static async Task UpdateRecordSPAsync(int recordId)
         {
             RecordModel record = new()
             {
@@ -476,13 +474,13 @@ namespace RecordDbMySqlDapper.Tests
                 Media = "CD",
                 Bought = "2023-09-18",
                 Cost = 19.95m,
-                Review = "This is Ethan\'s thirty-third album."
+                Review = "This is James\'s thirty-third album."
             };
 
-            var i = _rd.UpdateRecordSP(record);
+            var i = await _rd.UpdateRecordSPAsync(record);
 
             var message = i > 0 ? "Record updated." : "ERROR: Record not updated!";
-            Console.WriteLine(message);
+            await Console.Out.WriteLineAsync(message);
         }
 
         // Single record view

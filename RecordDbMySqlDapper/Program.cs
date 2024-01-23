@@ -54,14 +54,14 @@ namespace RecordDbMySqlDapper
             // await _rt.GetRecordByIdAsync(133);
             // await _rt.GetRecordByIdSPAsync(133);
 
-            _rt.UpdateRecord(5260);
-            _rt.UpdateRecordSP(5261);
+            // await _rt.UpdateRecordAsync(5260);
+            // await _rt.UpdateRecordSPAsync(5261);
 
-            // _rt.DeleteRecord(5258);
-            // _rt.DeleteRecordSP(5259);
+            // await _rt.DeleteRecordAsync(5260);
+            // await _rt.DeleteRecordSPAsync(5261);
 
-            // _rt.GetRecordByName("Cutting Edge");
-            // _rt.GetRecordByNameSP("Cutting Edge");
+            // await _rt.GetRecordByNameAsync("Cutting Edge");
+            // await _rt.GetRecordByNameSPAsync("Cutting Edge");
 
             // _rt.GetRecordsByArtistId(114);
             // _rt.GetRecordsByArtistIdSP(114);
