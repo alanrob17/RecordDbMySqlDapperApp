@@ -35,32 +35,34 @@ namespace DapperDAL
             }
         }
 
-        public static List<RecordModel> GetRecordsByArtistId(int artistId)
+        public static async Task<List<RecordModel>> GetRecordsByArtistIdAsync(int artistId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>($"SELECT * FROM Record WHERE ArtistId = {artistId} ORDER BY Recorded DESC").ToList();
+                var result = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE ArtistId = {artistId} ORDER BY Recorded DESC");
+                return result.ToList();
             }
         }
 
-        public static List<RecordModel> GetRecordsByArtistIdSP(int artistId)
+        public static async Task<List<RecordModel>> GetRecordsByArtistIdSPAsync(int artistId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_artistId", artistId);
 
-                return cn.Query<RecordModel>($"GetRecordsByArtistId", parameter, commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<RecordModel>($"GetRecordsByArtistId", parameter, commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
-        public static ArtistModel GetRecordsByArtistIdMultipleTables(int artistId)
+        public static async Task<ArtistModel> GetRecordsByArtistIdMultipleTablesAsync(int artistId)
         {
             string query = "select * from Artist where artistId = @artistId ; select * from Record where artistId = @artistId order by Recorded;";
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var multipleResult = cn.QueryMultiple(query, new { artistId = artistId });
+                var multipleResult = await cn.QueryMultipleAsync(query, new { artistId = artistId });
 
                 var artist = multipleResult.Read<ArtistModel>().SingleOrDefault();
                 if (artist is ArtistModel)
@@ -76,7 +78,7 @@ namespace DapperDAL
             }
         }
 
-        public static ArtistModel GetRecordsByArtistIdMultipleTablesSP(int artistId)
+        public static async Task<ArtistModel> GetRecordsByArtistIdMultipleTablesSPAsync(int artistId)
         {
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
@@ -84,8 +86,10 @@ namespace DapperDAL
                 var parameter = new DynamicParameters();
                 parameter.Add("_artistId", artistId);
 
-                var artist = cn.Query<ArtistModel>("GetArtistById", parameter, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var records = cn.Query<RecordModel>("GetRecordsByArtistId", parameter, commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<ArtistModel>("GetArtistById", parameter, commandType: CommandType.StoredProcedure);
+                var artist = result.SingleOrDefault();
+                var results = await cn.QueryAsync<RecordModel>("GetRecordsByArtistId", parameter, commandType: CommandType.StoredProcedure);
+                var records = results.ToList();
 
                 if (artist is ArtistModel)
                 {
@@ -97,7 +101,7 @@ namespace DapperDAL
             }
         }
 
-        public static List<ArtistModel> GetArtistRecordsMultipleTables()
+        public static async Task<List<ArtistModel>> GetArtistRecordsMultipleTablesAsync()
         {
             List<ArtistModel> artists = new();
 
@@ -105,7 +109,7 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var multipleResult = cn.QueryMultiple(query);
+                var multipleResult = await cn.QueryMultipleAsync(query);
 
                 artists = multipleResult.Read<ArtistModel>().ToList();
                 var records = multipleResult.Read<RecordModel>().ToList();
@@ -119,15 +123,17 @@ namespace DapperDAL
             return artists;
         }
 
-        public static List<ArtistModel> GetArtistRecordsMultipleTablesSP()
+        public static async Task<List<ArtistModel>> GetArtistRecordsMultipleTablesSPAsync()
         {
             List<ArtistModel> artists = new();
 
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                artists = cn.Query<ArtistModel>("GetAllArtists", commandType: CommandType.StoredProcedure).ToList();
-                var records = cn.Query<RecordModel>("GetFullRecords", commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<ArtistModel>("GetAllArtists", commandType: CommandType.StoredProcedure);
+                artists = result.ToList();
+                var results = await cn.QueryAsync<RecordModel>("GetFullRecords", commandType: CommandType.StoredProcedure);
+                var records = results.ToList();
 
                 foreach (var artist in artists)
                 {
@@ -138,22 +144,24 @@ namespace DapperDAL
             return artists;
         }
 
-        public static List<RecordModel> GetRecordsByYear(int year)
+        public static async Task<List<RecordModel>> GetRecordsByYearAsync(int year)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>($"SELECT * FROM Record WHERE Recorded = {year} ORDER BY ArtistId").ToList();
+                var records = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE Recorded = {year} ORDER BY ArtistId");
+                return records.ToList();
             }
         }
 
-        public static List<dynamic> GetRecordsByYearSP(int year)
+        public static async Task<List<RecordModel>> GetRecordsByYearSPAsync(int year)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_year", year);
 
-                return cn.Query<dynamic>($"GetRecordsByYear", parameter, commandType: CommandType.StoredProcedure).ToList();
+                var records = await cn.QueryAsync<RecordModel>($"GetRecordsByYear", parameter, commandType: CommandType.StoredProcedure);
+                return records.ToList();
             }
         }
 
@@ -299,71 +307,71 @@ namespace DapperDAL
             return result;
         }
 
-        public static int GetTotalNumberOfCDs()
+        public static async Task<int> GetTotalNumberOfCDsAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'CD' OR Media = 'CD/DVD'");
+                return await cn.ExecuteScalarAsync<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'CD' OR Media = 'CD/DVD'");
             }
         }
 
-        public static int GetTotalNumberOfCDsSP()
+        public static async Task<int> GetTotalNumberOfCDsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("GetTotalCDCount", commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetTotalCDCount", commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static int GetTotalNumberOfDiscs()
+        public static async Task<int> GetTotalNumberOfDiscsAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("SELECT SUM(Discs) FROM Record");
+                return await cn.ExecuteScalarAsync<int>("SELECT SUM(Discs) FROM Record");
             }
         }
 
-        public static int GetTotalNumberOfDiscsSP()
+        public static async Task<int> GetTotalNumberOfDiscsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("GetTotalNumberOfAllRecords", commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetTotalNumberOfAllRecords", commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static int GetTotalNumberOfRecords()
+        public static async Task<int> GetTotalNumberOfRecordsAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'R'");
+                return await cn.ExecuteScalarAsync<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'R'");
             }
         }
 
-        public static int GetTotalNumberOfRecordsSP()
+        public static async Task<int> GetTotalNumberOfRecordsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("GetTotalNumberOfRecords", commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetTotalNumberOfRecords", commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static object GetTotalNumberOfBlurays()
+        public static async Task<int> GetTotalNumberOfBluraysAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'CD/Blu-ray' OR Media = 'Blu-ray'");
+                return await cn.ExecuteScalarAsync<int>("SELECT SUM(Discs) FROM Record WHERE Media = 'CD/Blu-ray' OR Media = 'Blu-ray'");
             }
         }
 
-        public static object GetTotalNumberOfBluraysSP()
+        public static async Task<int> GetTotalNumberOfBluraysSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>("GetTotalNumberOfAllBlurays", commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetTotalNumberOfAllBlurays", commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static List<dynamic> GetArtistRecordList()
+        public static async Task<List<dynamic>> GetArtistRecordListAsync()
         {
             string query = "SELECT a.ArtistId, a.FirstName, a.LastName, a.Name AS Artist, r.RecordId, r.Name, r.Recorded, r.Media, r.Rating " +
                            "FROM Artist a " +
@@ -372,22 +380,21 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>(query).ToList();
+                var result = await cn.QueryAsync<dynamic>(query);
+                return result.ToList();
             }
         }
 
-        public static List<dynamic> GetArtistRecordListSP()
+        public static async Task<List<dynamic>> GetArtistRecordListSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>("GetAllArtistsAndRecords", commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<dynamic>("GetAllArtistsAndRecords", commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
-        /// <summary>
-        /// Count the number of discs.
-        /// </summary>
-        public static int CountAllDiscs(string media = "")
+        public static async Task<int> CountAllDiscsAsync(string media = "")
         {
             var mediaType = string.Empty;
 
@@ -411,14 +418,11 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.ExecuteScalar<int>($"SELECT SUM(Discs) FROM Record WHERE Media = {mediaType}");
+                return await cn.ExecuteScalarAsync<int>($"SELECT SUM(Discs) FROM Record WHERE Media = {mediaType}");
             }
         }
 
-        /// <summary>
-        /// Count the number of discs.
-        /// </summary>
-        public static int CountAllDiscsSP(string media = "")
+        public static async Task<int> CountAllDiscsSPAsync(string media = "")
         {
             var mediaType = 0;
 
@@ -445,11 +449,11 @@ namespace DapperDAL
                 var parameter = new DynamicParameters();
                 parameter.Add("_mediaType", mediaType);
 
-                return cn.ExecuteScalar<int>("GetMediaCountByType", parameter, commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetMediaCountByType", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static dynamic? GetArtistRecordEntity(int recordId)
+        public static async Task<dynamic>? GetArtistRecordEntityAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
@@ -464,7 +468,7 @@ namespace DapperDAL
                     JOIN Artist a ON a.ArtistId = r.ArtistId
                     WHERE r.RecordId = @recordId";
 
-                var result = cn.QueryFirstOrDefault<dynamic>(query, new { recordId });
+                var result = await cn.QueryFirstOrDefaultAsync<dynamic>(query, new { recordId });
 
                 if (result == null)
                 {
@@ -476,14 +480,14 @@ namespace DapperDAL
             }
         }
 
-        public static dynamic? GetArtistRecordEntitySP(int recordId)
+        public static async Task<dynamic>? GetArtistRecordEntitySPAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_recordId", recordId);
 
-                var result = cn.QueryFirstOrDefault<dynamic>("GetArtistRecordByRecordId", parameter, commandType: CommandType.StoredProcedure);
+                var result = await cn.QueryFirstOrDefaultAsync<dynamic>("GetArtistRecordByRecordId", parameter, commandType: CommandType.StoredProcedure);
 
                 if (result == null)
                 {
@@ -495,10 +499,7 @@ namespace DapperDAL
             }
         }
 
-        /// <summary>
-        /// Get number of records for an artist.
-        /// </summary>
-        public static int GetArtistNumberOfRecords(int artistId)
+        public static async Task<int> GetArtistNumberOfRecordsAsync(int artistId)
         {
             var discs = 0;
 
@@ -508,17 +509,14 @@ namespace DapperDAL
             }
         }
 
-        /// <summary>
-        /// Get number of records for an artist.
-        /// </summary>
-        public static int GetArtistNumberOfRecordsSP(int artistId)
+        public static async Task<int> GetArtistNumberOfRecordsSPAsync(int artistId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_artistId", artistId);
 
-                var result = cn.QueryFirstOrDefault<int>("GetArtistNumberOfRecords", parameter, commandType: CommandType.StoredProcedure);
+                var result = await cn.QueryFirstOrDefaultAsync<int>("GetArtistNumberOfRecords", parameter, commandType: CommandType.StoredProcedure);
 
                 return result;
             }
@@ -527,92 +525,87 @@ namespace DapperDAL
         /// <summary>
         /// Get record details from ToString method.
         /// </summary>
-        public static RecordModel GetFormattedRecord(int recordId)
+        public static async Task<RecordModel> GetFormattedRecordAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<RecordModel>($"SELECT * FROM Record WHERE RecordId = {recordId}").FirstOrDefault() ?? new RecordModel { RecordId = 0 };
+                var result = await cn.QueryAsync<RecordModel>($"SELECT * FROM Record WHERE RecordId = {recordId}");
+                return result.FirstOrDefault() ?? new RecordModel { RecordId = 0 };
             }
         }
 
         /// <summary>
         /// Get record details from ToString method.
         /// </summary>
-        public static RecordModel GetFormattedRecordSP(int recordId)
+        public static async Task<RecordModel> GetFormattedRecordSPAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("_recordId", recordId);
 
-                return cn.QueryFirstOrDefault<RecordModel>("GetSingleRecord", parameter, commandType: CommandType.StoredProcedure);
+                return await cn.QueryFirstOrDefaultAsync<RecordModel>("GetSingleRecord", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static string GetArtistNameFromRecord(int recordId)
+        public static async Task<string> GetArtistNameFromRecordAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var query = "SELECT a.Name FROM Artist a INNER JOIN Record r ON a.ArtistId = r.ArtistId WHERE r.RecordId = @recordId";
                 var parameters = new { recordId };
 
-                return cn.QuerySingleOrDefault<string>(query, parameters);
+                return await cn.QuerySingleOrDefaultAsync<string>(query, parameters);
             }
         }
 
-        public static string GetArtistNameFromRecordSP(int recordId)
+        public static async Task<string> GetArtistNameFromRecordSPAsync(int recordId)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var _recordId = recordId;
                 var parameter = new { _recordId };
 
-                return cn.QuerySingleOrDefault<string>("GetArtistNameByRecordId", parameter, commandType: CommandType.StoredProcedure);
+                return await cn.QuerySingleOrDefaultAsync<string>("GetArtistNameByRecordId", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
-        /// <summary>
-        /// Get the number of discs for a particular year.
-        /// </summary>
-        public static int GetDiscCountForYear(int year)
+        public static async Task<int> GetDiscCountForYearAsync(int year)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<int>($"SELECT SUM(Discs) FROM Record WHERE Recorded = {year};").FirstOrDefault();
+                var result = await cn.QueryAsync<int>($"SELECT SUM(Discs) FROM Record WHERE Recorded = {year};");
+                return result.FirstOrDefault();
             }
         }
 
-        /// <summary>
-        /// Get the number of discs for a particular year.
-        /// </summary>
-        public static int GetDiscCountForYearSP(int year)
+        public static async Task<int> GetDiscCountForYearSPAsync(int year)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 var _year = year;   
                 var parameter = new { _year };
-                return cn.ExecuteScalar<int>($"GetRecordedYearNumber", parameter, commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>($"GetRecordedYearNumber", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
         /// <summary>
         /// Get the number of discs that I bought for a particular year.
         /// </summary>
-        public static int GetBoughtDiscCountForYear(string year)
+        public static async Task<int> GetBoughtDiscCountForYearAsync(string year)
         {
-            var discCount = 0;
-
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
                 // get year from bought date
-                return cn.Query<int>($"SELECT SUM(Discs) FROM Record WHERE Bought like '%{year}%'").FirstOrDefault();
+                var result = await cn.QueryAsync<int>($"SELECT SUM(Discs) FROM Record WHERE Bought like '%{year}%'");
+                return result.FirstOrDefault();
             }
         }
 
         /// <summary>
         /// Get the number of discs that I bought for a particular year.
         /// </summary>
-        public static int GetBoughtDiscCountForYearSP(string year)
+        public static async Task<int> GetBoughtDiscCountForYearSPAsync(string year)
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
@@ -620,11 +613,11 @@ namespace DapperDAL
                 var parameter = new { _year };
 
                 // get year from bought date
-                return cn.ExecuteScalar<int>("GetBoughtDiscCountForYear", parameter, commandType: CommandType.StoredProcedure);
+                return await cn.ExecuteScalarAsync<int>("GetBoughtDiscCountForYear", parameter, commandType: CommandType.StoredProcedure);
             }
         }
 
-        public static List<dynamic> MissingRecordReviews()
+        public static async Task<List<dynamic>> MissingRecordReviewsAsync()
         {
             var query = "SELECT a.ArtistId, A.Name AS Artist, r.RecordId, r.Name, r.Recorded, r.Discs, r.Rating, r.Media " +
                 "FROM Artist a " +
@@ -634,27 +627,30 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>(query).ToList();
+                var result = await cn.QueryAsync<dynamic>(query);
+                return result.ToList();
             }
         }
 
-        public static List<dynamic> MissingRecordReviewsSP()
+        public static async Task<List<dynamic>> MissingRecordReviewsSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<dynamic>("MissingRecordReview", commandType: CommandType.StoredProcedure).ToList();
+                var result = await cn.QueryAsync<dynamic>("MissingRecordReview", commandType: CommandType.StoredProcedure);
+                return result.ToList();
             }
         }
 
-        public static int GetNoReviewCount()
+        public static async Task<int> GetNoReviewCountAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return cn.Query<int>($"SELECT * FROM Record WHERE Review IS NULL;").Count();
+                var result = await cn.QueryAsync<int>($"SELECT * FROM Record WHERE Review IS NULL;");
+                return result.Count();
             }
         }
 
-        public static int GetNoReviewCountSP()
+        public static async Task<int> GetNoReviewCountSPAsync()
         {
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
@@ -662,7 +658,7 @@ namespace DapperDAL
             }
         }
 
-        public static List<dynamic> GetCostTotals()
+        public static async Task<List<dynamic>> GetCostTotalsAsync()
         {
             var artistList = new List<dynamic>();
             var query = "SELECT " +
@@ -687,24 +683,23 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>(query).ToList();
+                artistList = (dynamic)await cn.QueryAsync<dynamic>(query);
+                return artistList.ToList();
             }
         }
 
-        public static List<dynamic> GetCostTotalsSP()
+        public static async Task<List<dynamic>> GetCostTotalsSPAsync()
         {
             var artistList = new List<dynamic>();
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
+                artistList = (dynamic)await cn.QueryAsync<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure);
+                return artistList.ToList();
             }
         }
 
-        /// <summary>
-        /// Get total number of discs for each artist.
-        /// </summary>
-        public static IEnumerable<dynamic> GetTotalArtistDiscs()
+        public static async Task<IEnumerable<dynamic>> GetTotalArtistDiscsAsync()
         {
             var artistList = new List<dynamic>();
             var query = "SELECT a.ArtistId, a.FirstName, a.LastName, a.Name, SUM(r.Discs) AS Discs " +
@@ -715,20 +710,19 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>(query).ToList();
+                artistList = (dynamic)await cn.QueryAsync<dynamic>(query);
+                return artistList.ToList();
             }
         }
 
-        /// <summary>
-        /// Get total number of discs for each artist.
-        /// </summary>
-        public static IEnumerable<dynamic> GetTotalArtistDiscsSP()
+        public static async Task<IEnumerable<dynamic>> GetTotalArtistDiscsSPAsync()
         {
             var artistList = new List<dynamic>();
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                return artistList = cn.Query<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure).ToList();
+                artistList = (dynamic)await cn.QueryAsync<dynamic>("GetTotalsForEachArtist", commandType: CommandType.StoredProcedure);
+                return artistList.ToList();
             }
         }
 

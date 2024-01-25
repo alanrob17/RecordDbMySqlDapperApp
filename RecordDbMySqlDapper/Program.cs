@@ -63,83 +63,80 @@ namespace RecordDbMySqlDapper
             // await _rt.GetRecordByNameAsync("Cutting Edge");
             // await _rt.GetRecordByNameSPAsync("Cutting Edge");
 
-            // _rt.GetRecordsByArtistId(114);
-            // _rt.GetRecordsByArtistIdSP(114);
+            // await _rt.GetRecordsByArtistIdAsync(114);
+            // await _rt.GetRecordsByArtistIdSPAsync(73);
 
-            // _rt.GetArtistRecordsMultipleTables();
-            // _rt.GetArtistRecordsMultipleTablesSP();
+            // await _rt.GetArtistRecordsMultipleTablesAsync();
+            // await _rt.GetArtistRecordsMultipleTablesSPAsync();
 
-            // _rt.GetRecordsByArtistIdMultipleTables(114);
-            // _rt.GetRecordsByArtistIdMultipleTablesSP(114);
+            // await _rt.GetRecordsByArtistIdMultipleTablesAsync(114);
+            // await _rt.GetRecordsByArtistIdMultipleTablesSPAsync(114);
 
-            // _rt.GetRecordsByYear(1974);
-            // _rt.GetRecordsByYearSP(1974);
+            // await _rt.GetRecordsByYearAsync(1974);
+            // await _rt.GetRecordsByYearSPAsync(1985);
 
-            // _rt.GetTotalNumberOfCDs(); 
-            // _rt.GetTotalNumberOfCDsSP(); 
+            // await _rt.GetTotalNumberOfCDsAsync(); 
+            // await _rt.GetTotalNumberOfCDsSPAsync(); 
 
-            // _rt.GetTotalNumberOfDiscs(); 
-            // _rt.GetTotalNumberOfDiscsSP(); 
+            // await _rt.GetTotalNumberOfDiscsAsync(); 
+            // await _rt.GetTotalNumberOfDiscsSPAsync(); 
 
-            // _rt.GetTotalNumberOfRecords(); 
-            // _rt.GetTotalNumberOfRecordsSP(); 
+            // await _rt.GetTotalNumberOfRecordsAsync(); 
+            // await _rt.GetTotalNumberOfRecordsSPAsync(); 
 
-            // _rt.GetTotalNumberOfBlurays();
-            // _rt.GetTotalNumberOfBluraysSP();
+            // await _rt.GetTotalNumberOfBluraysAsync();
+            // await _rt.GetTotalNumberOfBluraysSPAsync();
 
-            // _rt.GetRecordList();
-            // _rt.GetRecordListSP();
+            // await _rt.GetRecordListAsync();
+            // await _rt.GetRecordListSPAsync();
 
-            // _rt.GetRecordListMultipleTables();
-            // _rt.GetRecordListMultipleTablesSP();
+            // await _rt.GetRecordListMultipleTablesAsync();
+            // await _rt.GetRecordListMultipleTablesSPAsync();
 
-            // _rt.CountDiscs("DVD");
+            // await _rt.CountDiscsAsync("DVD");
+            // await _rt.CountDiscsSPAsync(string.Empty);
 
-            // _rt.CountDiscsSP(string.Empty);
+            // await _rt.CountDiscsAsync("DVD");
+            // await _rt.CountDiscsSPAsync("DVD");
 
-            // _rt.CountDiscs("DVD");
-            // _rt.CountDiscsSP("DVD");
+            // await _rt.CountDiscsAsync("CD");
+            // await _rt.CountDiscsSPAsync("CD");
 
-            // _rt.CountDiscs("CD");
+            // await _rt.CountDiscsAsync("R");
+            // await _rt.CountDiscsSPAsync("R");
 
-            // _rt.CountDiscsSP("CD");
+            // await _rt.GetArtistRecordEntityAsync(2196);
+            // await _rt.GetArtistRecordEntitySPAsync(2196);
 
-            // _rt.CountDiscs("R");
+            // await _rt.GetArtistNumberOfRecordsAsync(114);
+            // await _rt.GetArtistNumberOfRecordsSPAsync(114);
 
-            // _rt.CountDiscsSP("R");
+            // await _rt.GetRecordDetailsAsync(2196);
+            // await _rt.GetRecordDetailsSPAsync(2196);
 
-            // _rt.GetArtistRecordEntity(2196);
-            // _rt.GetArtistRecordEntitySP(2196);
+            // await _rt.GetArtistNameFromRecordAsync(2196);
+            // await _rt.GetArtistNameFromRecordSPAsync(2196);
 
-            // _rt.GetArtistNumberOfRecords(114);
-            // _rt.GetArtistNumberOfRecordsSP(114);
+            // await _rt.GetDiscCountForYearAsync(1974);
+            // await _rt.GetDiscCountForYearSPAsync(1974);
 
-            // _rt.GetRecordDetails(2196);
-            // _rt.GetRecordDetailsSP(2196);
+            // await _rt.GetBoughtDiscCountForYearAsync("2000");
+            // await _rt.GetBoughtDiscCountForYearSPAsync("2000");
 
-            // _rt.GetArtistNameFromRecord(2196);
-            // _rt.GetArtistNameFromRecordSP(2196);
+            // await _rt.GetNoRecordReviewAsync();
+            // await _rt.GetNoRecordReviewSPAsync();
 
-            // _rt.GetDiscCountForYear(1974);
-            // _rt.GetDiscCountForYearSP(1974);
+            // await _rt.GetNoReviewCountAsync();
+            // await _rt.GetNoReviewCountSPAsync();
 
-            // _rt.GetBoughtDiscCountForYear("2000");
-            // _rt.GetBoughtDiscCountForYearSP("2000");
+            // await _rt.GetTotalArtistCostAsync();
+            // await _rt.GetTotalArtistCostSPAsync();
 
-            // _rt.GetNoRecordReview();
-            // _rt.GetNoRecordReviewSP();
+            // await _rt.GetTotalArtistDiscsAsync();
+            // await _rt.GetTotalArtistDiscsSPAsync();
 
-            // _rt.GetNoReviewCount();
-            // _rt.GetNoReviewCountSP();
-
-            // _rt.GetTotalArtistCost();
-            // _rt.GetTotalArtistCostSP();
-
-            // _rt.GetTotalArtistDiscs();
-            // _rt.GetTotalArtistDiscsSP();
-
-            // _rt.RecordHtml(2196);
-            // _rt.RecordHtmlSP(2196);
+            // await _rt.RecordHtmlAsync(2196);
+            await _rt.RecordHtmlSPAsync(2196);
             #endregion
         }
     }

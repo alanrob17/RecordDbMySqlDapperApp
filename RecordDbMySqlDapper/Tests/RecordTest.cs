@@ -16,241 +16,236 @@ namespace RecordDbMySqlDapper.Tests
     public class RecordTest
     {
         // see GetArtistRecordsMultipleTables() for a better version.
-        // TODO: Change to an Async method
-        //internal static void GetRecordList()
-        //{
-        //    var artists = _ad.GetArtists();
-        //    var records = _rd.GetRecords();
+        internal static async Task GetRecordListAsync()
+        {
+            var artists = await _ad.GetArtistsAsync();
+            var records = await _rd.GetRecordsAsync();
 
-        //    foreach (var artist in artists)
-        //    {
-        //        Console.WriteLine($"{artist.Name}:\n");
+            foreach (var artist in artists)
+            {
+                await Console.Out.WriteLineAsync($"{artist.Name}:\n");
 
-        //        var ar = from r in records
-        //                 where artist.ArtistId == r.ArtistId
-        //                 orderby r.Recorded descending
-        //                 select r;
+                var ar = from r in records
+                         where artist.ArtistId == r.ArtistId
+                         orderby r.Recorded descending
+                         select r;
 
-        //        foreach (var rec in ar)
-        //        {
-        //            Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
-        //        }
+                foreach (var rec in ar)
+                {
+                    await Console.Out.WriteLineAsync($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
+                }
 
-        //        Console.WriteLine();
-        //    }
-        //}
+                await Console.Out.WriteLineAsync();
+            }
+        }
 
         // see GetArtistRecordsMultipleTablesSP() for a better version.
-        // TODO: Change to an Async method
-        //internal static void GetRecordListSP()
-        //{
-        //    var artists = _ad.GetArtistsSP();
-        //    var records = _rd.GetRecordsSP();
-
-        //    foreach (var artist in artists)
-        //    {
-        //        Console.WriteLine($"{artist.Name}:\n");
-
-        //        var ar = from r in records
-        //                 where artist.ArtistId == r.ArtistId
-        //                 orderby r.Recorded descending
-        //                 select r;
-
-        //        foreach (var rec in ar)
-        //        {
-        //            Console.WriteLine($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
-        //        }
-
-        //        Console.WriteLine();
-        //    }
-        //}
-
-        internal static void GetTotalNumberOfBlurays()
+        internal static async Task GetRecordListSPAsync()
         {
-            var total = _rd.GetTotalNumberOfBlurays();
-            Console.WriteLine($"Total number of Blu-rays: {total}");
+            var artists = await _ad.GetAllArtistsSPAsync();
+            var records = await _rd.GetRecordsSPAsync();
+
+            foreach (var artist in artists)
+            {
+                await Console.Out.WriteLineAsync($"{artist.Name}:\n");
+
+                var ar = from r in records
+                         where artist.ArtistId == r.ArtistId
+                         orderby r.Recorded descending
+                         select r;
+
+                foreach (var rec in ar)
+                {
+                    await Console.Out.WriteLineAsync($"\t{rec.Recorded} - {rec.Name} ({rec.Media})");
+                }
+
+                await Console.Out.WriteLineAsync();
+            }
         }
 
-        internal static void GetTotalNumberOfBluraysSP()
+        internal static async Task GetTotalNumberOfBluraysAsync()
         {
-            var total = _rd.GetTotalNumberOfBluraysSP();
-            Console.WriteLine($"Total number of Blu-rays: {total}");
+            var total = await _rd.GetTotalNumberOfBluraysAsync();
+            await Console.Out.WriteLineAsync($"Total number of Blu-rays: {total}");
         }
 
-        internal static void GetTotalNumberOfRecords()
+        internal static async Task GetTotalNumberOfBluraysSPAsync()
         {
-            var total = _rd.GetTotalNumberOfRecords();
-            Console.WriteLine($"Total number of Records: {total}");
+            var total = await _rd.GetTotalNumberOfBluraysSPAsync();
+            await Console.Out.WriteLineAsync($"Total number of Blu-rays: {total}");
         }
 
-        internal static void GetTotalNumberOfRecordsSP()
+        internal static async Task GetTotalNumberOfRecordsAsync()
         {
-            var total = _rd.GetTotalNumberOfRecordsSP();
-            Console.WriteLine($"Total number of Records: {total}");
+            var total = await _rd.GetTotalNumberOfRecordsAsync();
+            await Console.Out.WriteLineAsync($"Total number of Records: {total}");
         }
 
-        internal static void GetTotalNumberOfCDs()
+        internal static async Task GetTotalNumberOfRecordsSPAsync()
         {
-            var total = _rd.GetTotalNumberOfCDs();
-            Console.WriteLine($"Total number of CD's: {total}");
+            var total = await _rd.GetTotalNumberOfRecordsSPAsync();
+            await Console.Out.WriteLineAsync($"Total number of Records: {total}");
         }
 
-        internal static void GetTotalNumberOfCDsSP()
+        internal static async Task GetTotalNumberOfCDsAsync()
         {
-            var total = _rd.GetTotalNumberOfCDsSP();
-            Console.WriteLine($"Total number of CD's: {total}");
+            var total = await _rd.GetTotalNumberOfCDsAsync();
+            await Console.Out.WriteLineAsync($"Total number of CD's: {total}");
         }
 
-        internal static void GetTotalNumberOfDiscs()
+        internal static async Task GetTotalNumberOfCDsSPAsync()
         {
-            var total = _rd.GetTotalNumberOfDiscs();
-            Console.WriteLine($"Total number of Discs: {total}");
+            var total = await _rd.GetTotalNumberOfCDsSPAsync();
+            await Console.Out.WriteLineAsync($"Total number of CD's: {total}");
         }
 
-        internal static void GetTotalNumberOfDiscsSP()
+        internal static async Task GetTotalNumberOfDiscsAsync()
         {
-            var total = _rd.GetTotalNumberOfDiscsSP();
-            Console.WriteLine($"Total number of Discs: {total}");
+            var total = await _rd.GetTotalNumberOfDiscsAsync();
+            await Console.Out.WriteLineAsync($"Total number of Discs: {total}");
         }
 
-        // TODO: Change to an Async method
-        //internal static void GetRecordsByYear(int year)
-        //{
-        //    var records = _rd.GetRecordsByYear(year);
-        //    if (records.Count == 0)
-        //    {
-        //        Console.WriteLine($"No records found for {year}");
-        //    }
-        //    else
-        //    {
-        //        foreach (var record in records)
-        //        {
-        //            PrintArtistRecord(record);
-        //        }
-        //    }
-        //}
-
-        internal static void GetRecordsByYearSP(int year)
+        internal static async Task GetTotalNumberOfDiscsSPAsync()
         {
-            var records = _rd.GetRecordsByYearSP(year);
+            var total = await _rd.GetTotalNumberOfDiscsSPAsync();
+            await Console.Out.WriteLineAsync($"Total number of Discs: {total}");
+        }
+
+        internal static async Task GetRecordsByYearAsync(int year)
+        {
+            var records = await _rd.GetRecordsByYearAsync(year);
+            if (records.Count == 0)
+            {
+                await Console.Out.WriteLineAsync($"No records found for {year}");
+            }
+            else
+            {
+                foreach (var record in records)
+                {
+                    await PrintArtistRecordAsync(record);
+                }
+            }
+        }
+
+        internal static async Task GetRecordsByYearSPAsync(int year)
+        {
+            var records = await _rd.GetRecordsByYearSPAsync(year);
 
             if (records.Count > 0)
             {
                 foreach (var record in records)
                 {
-                    Console.WriteLine($"{record.Name} - {record.Recorded} ({record.Media})");
+                    await Console.Out.WriteLineAsync($"{record.Name} - {record.Recorded} ({record.Media})");
                 }
             }
             else
             {
-                Console.WriteLine($"No records found for {year}");
+                await Console.Out.WriteLineAsync($"No records found for {year}");
             }
         }
 
-        // TODO: Change to an Async method
-        //internal static void GetRecordsByArtistId(int artistId)
-        //{
-        //    var artist = _ad.GetArtistById(artistId);
-
-        //    if (artist is ArtistModel)
-        //    {
-        //        _at.PrintArtist(artist);
-
-        //        Console.WriteLine("\n----------------------------\n");
-
-        //        var records = _rd.GetRecordsByArtistId(artistId);
-
-        //        foreach (var record in records)
-        //        {
-        //            PrintRecord(record);
-        //        }
-        //    }
-        //}
-
-        // TODO: Change to an Async method
-        //internal static void GetRecordsByArtistIdSP(int artistId)
-        //{
-        //    var artist = _ad.GetArtistByIdSP(artistId);
-
-        //    if (artist is ArtistModel)
-        //    {
-        //        _at.PrintArtist(artist);
-
-        //        Console.WriteLine("\n----------------------------\n");
-
-        //        var records = _rd.GetRecordsByArtistIdSP(artistId);
-
-        //        foreach (var record in records)
-        //        {
-        //            PrintRecord(record);
-        //        }
-        //    }
-        //}
-
-        internal static void GetRecordsByArtistIdMultipleTables(int artistId)
+        internal static async Task GetRecordsByArtistIdAsync(int artistId)
         {
-            var artist = _rd.GetRecordsByArtistIdMultipleTables(artistId);
+            var artist = await _ad.GetArtistByIdAsync(artistId);
 
-            if (artist.ArtistId > 0)
+            if (artist is ArtistModel)
             {
-                _at.PrintArtist(artist);
+                await _at.PrintArtistAsync(artist);
 
-                Console.WriteLine("\n----------------------------\n");
+                await Console.Out.WriteLineAsync("\n----------------------------\n");
 
-                var records = _rd.GetRecordsByArtistId(artistId);
+                var records = await _rd.GetRecordsByArtistIdAsync(artistId);
 
                 foreach (var record in records)
                 {
-                    PrintRecord(record);
+                    await PrintRecordAsync(record);
                 }
             }
         }
 
-        internal static void GetRecordsByArtistIdMultipleTablesSP(int artistId)
+        internal static async Task GetRecordsByArtistIdSPAsync(int artistId)
         {
-            var artist = _rd.GetRecordsByArtistIdMultipleTablesSP(artistId);
+            var artist = await _ad.GetArtistByIdSPAsync(artistId);
 
-            if (artist.ArtistId > 0)
+            if (artist is ArtistModel)
             {
-                _at.PrintArtist(artist);
+                await _at.PrintArtistAsync(artist);
 
-                Console.WriteLine("\n----------------------------\n");
+                await Console.Out.WriteLineAsync("\n----------------------------\n");
 
-                var records = _rd.GetRecordsByArtistIdSP(artistId);
+                var records = await _rd.GetRecordsByArtistIdSPAsync(artistId);
 
                 foreach (var record in records)
                 {
-                    PrintRecord(record);
+                    await PrintRecordAsync(record);
                 }
             }
         }
 
-        internal static void GetArtistRecordsMultipleTables()
+        internal static async Task GetRecordsByArtistIdMultipleTablesAsync(int artistId)
         {
-            var artists = _rd.GetArtistRecordsMultipleTables();
+            var artist = await _rd.GetRecordsByArtistIdMultipleTablesAsync(artistId);
 
-            foreach (var artist in artists)
+            if (artist.ArtistId > 0)
             {
-                Console.WriteLine($"\n{artist.Name}");
+                await _at.PrintArtistAsync(artist);
 
-                foreach (var record in artist.Records)
+                await Console.Out.WriteLineAsync("\n----------------------------\n");
+
+                var records = await _rd.GetRecordsByArtistIdAsync(artistId);
+
+                foreach (var record in records)
                 {
-                    Console.WriteLine($"\t{record.Name}, {record.Recorded} ({record.Media})");
+                   await PrintRecordAsync(record);
                 }
             }
         }
 
-        internal static void GetArtistRecordsMultipleTablesSP()
+        internal static async Task GetRecordsByArtistIdMultipleTablesSPAsync(int artistId)
         {
-            var artists = _rd.GetArtistRecordsMultipleTablesSP();
+            var artist = await _rd.GetRecordsByArtistIdMultipleTablesSPAsync(artistId);
+
+            if (artist.ArtistId > 0)
+            {
+                await _at.PrintArtistAsync(artist);
+
+                await Console.Out.WriteLineAsync("\n----------------------------\n");
+
+                var records = await _rd.GetRecordsByArtistIdSPAsync(artistId);
+
+                foreach (var record in records)
+                {
+                    await PrintRecordAsync(record);
+                }
+            }
+        }
+
+        internal static async Task GetArtistRecordsMultipleTablesAsync()
+        {
+            var artists = await _rd.GetArtistRecordsMultipleTablesAsync();
 
             foreach (var artist in artists)
             {
-                Console.WriteLine($"\n{artist.Name}");
+                await Console.Out.WriteLineAsync($"\n{artist.Name}");
 
                 foreach (var record in artist.Records)
                 {
-                    Console.WriteLine($"\t{record.Name}, {record.Recorded} ({record.Media})");
+                    await Console.Out.WriteLineAsync($"\t{record.Name}, {record.Recorded} ({record.Media})");
+                }
+            }
+        }
+
+        internal static async Task GetArtistRecordsMultipleTablesSPAsync()
+        {
+            var artists = await _rd.GetArtistRecordsMultipleTablesSPAsync();
+
+            foreach (var artist in artists)
+            {
+                await Console.Out.WriteLineAsync($"\n{artist.Name}");
+
+                foreach (var record in artist.Records)
+                {
+                    await Console.Out.WriteLineAsync($"\t{record.Name}, {record.Recorded} ({record.Media})");
                 }
             }
         }
@@ -329,39 +324,38 @@ namespace RecordDbMySqlDapper.Tests
             }
         }
 
-        // TODO: Change to an Async method
-        //internal static void GetArtistById(int artistId)
-        //{
-        //    var artist = _ad.GetArtistById(artistId);
+        internal static async Task GetArtistByIdAsync(int artistId)
+        {
+            var artist = await _ad.GetArtistByIdAsync(artistId);
 
-        //    if (artist is ArtistModel)
-        //    {
-        //        _at.PrintArtist(artist);
+            if (artist is ArtistModel)
+            {
+                await _at.PrintArtistAsync(artist);
 
-        //        var rec = new RecordModel()
-        //        {
-        //            ArtistId = artistId
-        //        };
+                var rec = new RecordModel()
+                {
+                    ArtistId = artistId
+                };
 
-        //        var records = _rd.GetRecordsByArtistId(rec.ArtistId);
+                var records = await _rd.GetRecordsByArtistIdAsync(rec.ArtistId);
 
-        //        foreach (var record in records)
-        //        {
-        //            PrintArtistRecord(record);
-        //        }
-        //    }
-        //}
+                foreach (var record in records)
+                {
+                    await PrintArtistRecordAsync(record);
+                }
+            }
+        }
 
-        internal static void PrintRecord(RecordModel record, bool review = false)
+        internal static async Task PrintRecordAsync(RecordModel record, bool review = false)
         {
             var rev = string.IsNullOrEmpty(record.Review) ? "No Review" : (record.Review.Length > 30 ? record.Review.Substring(0, 30) + "..." : "No review");
             try
             {
-                Console.WriteLine($"Id: {record.RecordId} - {record.ArtistId} {record.Name} - {record.Field}, {record.Recorded}, {record.Label}, {record.Pressing}, {record.Rating}, {record.Discs}, {record.Media}, {record.Bought}, ${record.Cost}.\n {rev}\n");
+                await Console.Out.WriteLineAsync($"Id: {record.RecordId} - {record.ArtistId} {record.Name} - {record.Field}, {record.Recorded}, {record.Label}, {record.Pressing}, {record.Rating}, {record.Discs}, {record.Media}, {record.Bought}, ${record.Cost}.\n {rev}\n");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"No record found.\n\n{ex.Message}");
+                await Console.Out.WriteLineAsync($"No record found.\n\n{ex.Message}");
             }
         }
 
@@ -484,268 +478,268 @@ namespace RecordDbMySqlDapper.Tests
         }
 
         // Single record view
-        internal static void GetRecordListMultipleTables()
+        internal static async Task GetRecordListMultipleTablesAsync()
         {
-            List<dynamic> records = _rd.GetArtistRecordList();
+            List<dynamic> records = await _rd.GetArtistRecordListAsync();
 
             foreach (dynamic r in records)
             {
-                Console.WriteLine($"Artist: {r.Artist} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
+                await Console.Out.WriteLineAsync($"Artist: {r.Artist} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
             }
         }
 
         // Single record view
-        internal static void GetRecordListMultipleTablesSP()
+        internal static async Task GetRecordListMultipleTablesSPAsync()
         {
-            List<dynamic> records = _rd.GetArtistRecordListSP();
+            List<dynamic> records = await _rd.GetArtistRecordListSPAsync();
 
             foreach (dynamic r in records)
             {
-                Console.WriteLine($"Artist: {r.Artist} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
+                await Console.Out.WriteLineAsync($"Artist: {r.Artist} - {r.Name} - {r.Recorded} ({r.Media}) {r.Rating}.");
             }
         }
 
-        internal static void CountDiscs(string media)
+        internal static async Task CountDiscsAsync(string media)
         {
-            var discs = _rd.CountAllDiscs(media);
+            var discs = await _rd.CountAllDiscsAsync(media);
 
             switch (media)
             {
                 case "":
-                    Console.WriteLine($"The total number of all discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of all discs is: {discs}");
                     break;
                 case "DVD":
-                    Console.WriteLine($"The total number of all DVD, CD/DVD Blu-ray or CD/Blu-ray discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of all DVD, CD/DVD Blu-ray or CD/Blu-ray discs is: {discs}");
                     break;
                 case "CD":
-                    Console.WriteLine($"The total number of audio discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of audio discs is: {discs}");
                     break;
                 case "R":
-                    Console.WriteLine($"The total number of vinyl discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of vinyl discs is: {discs}");
                     break;
                 default:
                     break;
             }
         }
 
-        internal static void CountDiscsSP(string media)
+        internal static async Task CountDiscsSPAsync(string media)
         {
-            var discs = _rd.CountAllDiscsSP(media);
+            var discs = await _rd.CountAllDiscsSPAsync(media);
 
             switch (media)
             {
                 case "":
-                    Console.WriteLine($"The total number of all discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of all discs is: {discs}");
                     break;
                 case "DVD":
-                    Console.WriteLine($"The total number of all DVD, CD/DVD Blu-ray or CD/Blu-ray discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of all DVD, CD/DVD Blu-ray or CD/Blu-ray discs is: {discs}");
                     break;
                 case "CD":
-                    Console.WriteLine($"The total number of audio discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of audio discs is: {discs}");
                     break;
                 case "R":
-                    Console.WriteLine($"The total number of vinyl discs is: {discs}");
+                    await Console.Out.WriteLineAsync($"The total number of vinyl discs is: {discs}");
                     break;
                 default:
                     break;
             }
         }
 
-        internal static void GetArtistRecordEntity(int recordId)
+        internal static async Task GetArtistRecordEntityAsync(int recordId)
         {
-            var r = _rd.GetArtistRecordEntity(recordId);
+            var r = await _rd.GetArtistRecordEntityAsync(recordId);
 
             if (r.RecordId > 0)
             {
-                Console.WriteLine($"{r.Artist}\n");
-                Console.WriteLine($"\t{r.Recorded} - {r.Name} ({r.Media}) - Rating: {r.Rating}");
+                await Console.Out.WriteLineAsync($"{r.Artist}\n");
+                await Console.Out.WriteLineAsync($"\t{r.Recorded} - {r.Name} ({r.Media}) - Rating: {r.Rating}");
             }
         }
 
-        internal static void GetArtistRecordEntitySP(int recordId)
+        internal static async Task GetArtistRecordEntitySPAsync(int recordId)
         {
-            var r = _rd.GetArtistRecordEntitySP(recordId);
+            var r = await _rd.GetArtistRecordEntitySPAsync(recordId);
 
             if (r.RecordId > 0)
             {
-                Console.WriteLine($"{r.ArtistName}\n");
-                Console.WriteLine($"\t{r.Recorded} - {r.Name} ({r.Media}) - Rating: {r.Rating}");
+                await Console.Out.WriteLineAsync($"{r.ArtistName}\n");
+                await Console.Out.WriteLineAsync($"\t{r.Recorded} - {r.Name} ({r.Media}) - Rating: {r.Rating}");
             }
         }
 
-        // TODO: Change to an Async method
-        //internal static void GetArtistNumberOfRecords(int artistId)
-        //{
-        //    var artist = _ad.GetArtistById(artistId);
-        //    var discs = _rd.GetArtistNumberOfRecords(artistId);
-
-        //    if (artist is ArtistModel)
-        //    {
-        //        Console.WriteLine($"{artist.Name} has {discs} discs.");
-        //    }
-        //}
-
-        internal static void GetArtistNumberOfRecordsSP(int artistId)
+        internal static async Task GetArtistNumberOfRecordsAsync(int artistId)
         {
-            int result = _rd.GetArtistNumberOfRecordsSP(artistId);
+            var artist = await _ad.GetArtistByIdAsync(artistId);
+            var discs = await _rd.GetArtistNumberOfRecordsAsync(artistId);
 
-            if (result != null)
+            if (artist is ArtistModel)
             {
-                Console.WriteLine($"{artistId}: has {result} discs.");
+                await Console.Out.WriteLineAsync($"{artist.Name} has {discs} discs.");
             }
         }
 
-        internal static void GetRecordDetails(int recordId)
+        internal static async Task GetArtistNumberOfRecordsSPAsync(int artistId)
         {
-            var record = _rd.GetFormattedRecord(recordId);
+            var artist = await _ad.GetArtistByIdAsync(artistId);
+            int result = await _rd.GetArtistNumberOfRecordsSPAsync(artistId);
+
+            if (result > 0)
+            {
+                await Console.Out.WriteLineAsync($"{artist.Name} has {result} discs.");
+            }
+        }
+
+        internal static async Task GetRecordDetailsAsync(int recordId)
+        {
+            var record = await _rd.GetFormattedRecordAsync(recordId);
 
             if (record is RecordModel)
             {
-                Console.WriteLine(record.ToString());
+                await Console.Out.WriteLineAsync(record.ToString());
             }
         }
 
-        internal static void GetRecordDetailsSP(int recordId)
+        internal static async Task GetRecordDetailsSPAsync(int recordId)
         {
-            var record = _rd.GetFormattedRecordSP(recordId);
+            var record = await _rd.GetFormattedRecordSPAsync(recordId);
 
             if (record is RecordModel)
             {
-                Console.WriteLine(record.ToString());
+                await Console.Out.WriteLineAsync(record.ToString());
             }
         }
 
-        internal static void GetArtistNameFromRecord(int recordId)
+        internal static async Task GetArtistNameFromRecordAsync(int recordId)
         {
-            var name = _rd.GetArtistNameFromRecord(recordId);
-            Console.WriteLine(name);
+            var name = await _rd.GetArtistNameFromRecordAsync(recordId);
+            await Console.Out.WriteLineAsync(name);
         }
 
-        internal static void GetArtistNameFromRecordSP(int recordId)
+        internal static async Task GetArtistNameFromRecordSPAsync(int recordId)
         {
-            var name = _rd.GetArtistNameFromRecordSP(recordId);
-            Console.WriteLine(name);
+            var name = await _rd.GetArtistNameFromRecordSPAsync(recordId);
+            await Console.Out.WriteLineAsync(name);
         }
 
-        internal static void GetDiscCountForYear(int year)
+        internal static async Task GetDiscCountForYearAsync(int year)
         {
-            var count = _rd.GetDiscCountForYear(year);
+            var count = await _rd.GetDiscCountForYearAsync(year);
 
-            Console.WriteLine($"The total number of discs for {year} are {count}.");
+            await Console.Out.WriteLineAsync($"The total number of discs for {year} are {count}.");
         }
 
-        internal static void GetDiscCountForYearSP(int year)
+        internal static async Task GetDiscCountForYearSPAsync(int year)
         {
-            var count = _rd.GetDiscCountForYearSP(year);
+            var count = await _rd.GetDiscCountForYearSPAsync(year);
 
-            Console.WriteLine($"The total number of discs for {year} are {count}.");
+            await Console.Out.WriteLineAsync($"The total number of discs for {year} are {count}.");
         }
 
-        internal static void GetBoughtDiscCountForYear(string year)
+        internal static async Task GetBoughtDiscCountForYearAsync(string year)
         {
-            var count = _rd.GetBoughtDiscCountForYear(year);
+            var count = await _rd.GetBoughtDiscCountForYearAsync(year);
 
-            Console.WriteLine($"The total number of discs bought in {year} is {count}.");
+            await Console.Out.WriteLineAsync($"The total number of discs bought in {year} is {count}.");
         }
 
-        internal static void GetBoughtDiscCountForYearSP(string year)
+        internal static async Task GetBoughtDiscCountForYearSPAsync(string year)
         {
-            var count = _rd.GetBoughtDiscCountForYearSP(year);
+            var count = await _rd.GetBoughtDiscCountForYearSPAsync(year);
 
-            Console.WriteLine($"The total number of discs bought in {year} is {count}.");
+            await Console.Out.WriteLineAsync($"The total number of discs bought in {year} is {count}.");
         }
 
-        internal static void GetNoRecordReview()
+        internal static async Task GetNoRecordReviewAsync()
         {
-            List<dynamic> records = _rd.MissingRecordReviews();
+            List<dynamic> records = await _rd.MissingRecordReviewsAsync();
 
             foreach (var record in records)
             {
-                Console.WriteLine($"{record.Artist} - Id: {record.RecordId} - {record.Name} - {record.Recorded}");
+                await Console.Out.WriteLineAsync($"{record.Artist} - Id: {record.RecordId} - {record.Name} - {record.Recorded}");
             }
         }
 
-        internal static void GetNoRecordReviewSP()
+        internal static async Task GetNoRecordReviewSPAsync()
         {
-            List<dynamic> records = _rd.MissingRecordReviewsSP();
+            List<dynamic> records = await _rd.MissingRecordReviewsSPAsync();
 
             foreach (var record in records)
             {
-                Console.WriteLine($"{record.Artist} - Id: {record.RecordId} - {record.Name} - {record.Recorded}");
+                await Console.Out.WriteLineAsync($"{record.Artist} - Id: {record.RecordId} - {record.Name} - {record.Recorded}");
             }
         }
 
-        internal static void GetNoReviewCount()
+        internal static async Task GetNoReviewCountAsync()
         {
-            var count = _rd.GetNoReviewCount();
+            var count = await _rd.GetNoReviewCountAsync();
 
-            Console.WriteLine($"The total number of empty Reviews is {count}.");
+            await Console.Out.WriteLineAsync($"The total number of empty Reviews is {count}.");
         }
 
-        internal static void GetNoReviewCountSP()
+        internal static async Task GetNoReviewCountSPAsync()
         {
-            var count = _rd.GetNoReviewCountSP();
+            var count = await _rd.GetNoReviewCountSPAsync();
 
-            Console.WriteLine($"The total number of empty Reviews is {count}.");
+            await Console.Out.WriteLineAsync($"The total number of empty Reviews is {count}.");
         }
 
-        internal static void GetTotalArtistCost()
+        internal static async Task GetTotalArtistCostAsync()
         {
-            var list = _rd.GetCostTotals();
+            var list = await _rd.GetCostTotalsAsync();
 
             foreach (var item in list)
             {
-                Console.WriteLine($"Total cost for {item.Name} with {item.TotalDiscs} discs is ${item.TotalCost:F2}.");
+                await Console.Out.WriteLineAsync($"Total cost for {item.Name} with {item.TotalDiscs} discs is ${item.TotalCost:F2}.");
             }
         }
 
-        internal static void GetTotalArtistCostSP()
+        internal static async Task GetTotalArtistCostSPAsync()
         {
-            var list = _rd.GetCostTotalsSP();
+            var list = await _rd.GetCostTotalsSPAsync();
 
             foreach (var item in list)
             {
-                Console.WriteLine($"Total cost for {item.Name} with {item.TotalDiscs} discs is ${item.TotalCost:F2}.");
+                await Console.Out.WriteLineAsync($"Total cost for {item.Name} with {item.TotalDiscs} discs is ${item.TotalCost:F2}.");
             }
         }
 
-        internal static void GetTotalArtistDiscs()
+        internal static async Task GetTotalArtistDiscsAsync()
         {
-            var list = _rd.GetTotalArtistDiscs();
+            var list = await _rd.GetTotalArtistDiscsAsync();
 
             foreach (var item in list)
             {
-                Console.WriteLine($"Total number of discs for {item.Name} is {item.Discs}.");
+                await Console.Out.WriteLineAsync($"Total number of discs for {item.Name} is {item.Discs}.");
             }
         }
 
-        internal static void GetTotalArtistDiscsSP()
+        internal static async Task GetTotalArtistDiscsSPAsync()
         {
-            var list = _rd.GetTotalArtistDiscsSP();
+            var list = await _rd.GetTotalArtistDiscsSPAsync();
 
             foreach (var item in list)
             {
-                Console.WriteLine($"Total number of discs for {item.Name} is {item.TotalDiscs}.");
+                await Console.Out.WriteLineAsync($"Total number of discs for {item.Name} is {item.TotalDiscs}.");
             }
         }
 
-        internal static void RecordHtml(int recordId)
+        internal static async Task RecordHtmlAsync(int recordId)
         {
-            var r = _rd.GetArtistRecordEntity(recordId);
+            var r = await _rd.GetArtistRecordEntityAsync(recordId);
 
             if (r != null)
             {
-                Console.WriteLine($"<p><strong>ArtistId:</strong> {r.ArtistId}</p>\n<p><strong>Artist:</strong> {r.Artist}</p>\n<p><strong>RecordId:</strong> {r.RecordId}</p>\n<p><strong>Recorded:</strong> {r.Recorded}</p>\n<p><strong>Name:</strong> {r.Name}</p>\n<p><strong>Rating:</strong> {r.Rating}</p>\n<p><strong>Media:</strong> {r.Media}</p>\n");
+                await Console.Out.WriteLineAsync($"<p><strong>ArtistId:</strong> {r.ArtistId}</p>\n<p><strong>Artist:</strong> {r.Artist}</p>\n<p><strong>RecordId:</strong> {r.RecordId}</p>\n<p><strong>Recorded:</strong> {r.Recorded}</p>\n<p><strong>Name:</strong> {r.Name}</p>\n<p><strong>Rating:</strong> {r.Rating}</p>\n<p><strong>Media:</strong> {r.Media}</p>\n");
             }
         }
 
-        internal static void RecordHtmlSP(int recordId)
+        internal static async Task RecordHtmlSPAsync(int recordId)
         {
-            var r = _rd.GetArtistRecordEntitySP(recordId);
+            var r = await _rd.GetArtistRecordEntitySPAsync(recordId);
 
             if (r != null)
             {
-                Console.WriteLine($"<p><strong>ArtistId:</strong> {r.ArtistId}</p>\n<p><strong>Artist:</strong> {r.Artist}</p>\n<p><strong>RecordId:</strong> {r.RecordId}</p>\n<p><strong>Recorded:</strong> {r.Recorded}</p>\n<p><strong>Name:</strong> {r.Name}</p>\n<p><strong>Rating:</strong> {r.Rating}</p>\n<p><strong>Media:</strong> {r.Media}</p>\n");
+                await Console.Out.WriteLineAsync($"<p><strong>ArtistId:</strong> {r.ArtistId}</p>\n<p><strong>Artist:</strong> {r.Artist}</p>\n<p><strong>RecordId:</strong> {r.RecordId}</p>\n<p><strong>Recorded:</strong> {r.Recorded}</p>\n<p><strong>Name:</strong> {r.Name}</p>\n<p><strong>Rating:</strong> {r.Rating}</p>\n<p><strong>Media:</strong> {r.Media}</p>\n");
             }
         }
     }

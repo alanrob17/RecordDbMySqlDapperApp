@@ -90,7 +90,7 @@ namespace RecordDbMySqlDapper.Tests
 
             foreach (var artist in artists)
             {
-                await PrintArtist(artist);
+                await PrintArtistAsync(artist);
             }
         }
 
@@ -101,7 +101,7 @@ namespace RecordDbMySqlDapper.Tests
 
             foreach (var artist in artists)
             {
-                await PrintArtist(artist);
+                await PrintArtistAsync(artist);
             }
         }
 
@@ -261,7 +261,7 @@ namespace RecordDbMySqlDapper.Tests
             await Console.Out.WriteLineAsync($"The total number of artists with missing biographies: {number}.");
         }
 
-        internal static async Task PrintArtist(ArtistModel artist)
+        internal static async Task PrintArtistAsync(ArtistModel artist)
         {
             try
             {
