@@ -1,6 +1,6 @@
 ﻿using _at = RecordDbMySqlDapper.Tests.ArtistTest;
 using _rt = RecordDbMySqlDapper.Tests.RecordTest;
-
+using _st = RecordDbMySqlDapper.Tests.StatisticTest;
 
 namespace RecordDbMySqlDapper
 {
@@ -41,7 +41,7 @@ namespace RecordDbMySqlDapper
 
             // await _at.GetNoBiographyCountAsync();
             // await _at.GetNoBiographyCountSPAsync();
-            
+
             #endregion
 
             #region Record Methods
@@ -136,7 +136,14 @@ namespace RecordDbMySqlDapper
             // await _rt.GetTotalArtistDiscsSPAsync();
 
             // await _rt.RecordHtmlAsync(2196);
-            await _rt.RecordHtmlSPAsync(2196);
+            // await _rt.RecordHtmlSPAsync(2196);
+
+            #endregion
+
+            #region Statistic Methods
+
+            await _st.PrintStatisticsAsync();
+
             #endregion
         }
     }

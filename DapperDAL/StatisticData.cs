@@ -136,14 +136,14 @@ namespace DapperDAL
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                var disks2017 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(disc), 0) FROM Record WHERE bought > '31-Dec-2016' AND bought < '01-Jan-2018'");
+                var disks2017 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2016-12-31' AND bought < '2018-01-01'");
 
                 statistics.Disks2017 = disks2017;
             }
 
             using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
             {
-                decimal cost2017 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '31-Dec-2016' AND bought < '01-Jan-2018'");
+                decimal cost2017 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2016-12-31' AND bought < '2018-01-01'");
 
                 // this is to stop a divide by zero error if nothing has been bought
                 if (cost2017 > 1)
@@ -158,255 +158,144 @@ namespace DapperDAL
                 }
             }
 
-        //    int? disks2018 = null;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of CD's bought in 2018              
-        //        var getValue = new SqlCommand("select sum(discs) from record where bought > '31-Dec-2017' and bought < '01-Jan-2019'", cn);
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                // query for Number of CD's bought in 2018              
+                int disks2018 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2017-12-31' AND bought < '2019-01-01'");
 
-        //        await cn.OpenAsync();
+                statistics.Disks2018 = disks2018;
+            }
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            disks2018 = (int?)result;
-        //        }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                // query for amount spent on CD's in 2018                
+                decimal cost2018 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2017-12-31' and bought < '2019-01-01'");
 
-        //        cn.Close();
-        //        statistics.Disks2018 = disks2018 ?? 0;
-        //    }
+                    statistics.Cost2018 = cost2018;
 
-        //    var cost2018 = 0.0m;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for amount spent on CD's in 2018                
-        //        var getValue = new SqlCommand("select sum(cost) from record where bought > '31-Dec-2017' and bought < '01-Jan-2019'", cn);
+                // this is to stop a divide by zero error if nothing has been bought
+                if (statistics.Cost2018 > 1)
+                {
+                    var av2018 = statistics.Cost2018 / (decimal)statistics.Disks2018;
+                    statistics.Av2018 = av2018;
+                }
+                else
+                {
+                    statistics.Cost2018 = 0.00m;
+                    statistics.Av2018 = 0.00m;
+                }
+            }
 
-        //        await cn.OpenAsync();
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                int disks2019 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2018-12-31' and bought < '2020-01-01'");
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            cost2018 = (decimal)result;
-        //        }
+                statistics.Disks2019 = disks2019;
+            }
 
-        //        // this is to stop a divide by zero error if nothing has been bought
-        //        if (cost2018 > 1)
-        //        {
-        //            statistics.Cost2018 = cost2018;
-        //            var av2018 = cost2018 / (decimal)disks2018;
-        //            statistics.Av2018 = av2018;
-        //        }
-        //        else
-        //        {
-        //            statistics.Cost2018 = 0.00m;
-        //            statistics.Av2018 = 0.00m;
-        //        }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                decimal cost2019 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2018-12-31' and bought < '2020-01-01'");
 
-        //        cn.Close();
-        //        statistics.Cost2018 = cost2018;
-        //    }
+                statistics.Cost2019 = cost2019;
 
-        //    int? disks2019 = null;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of CD's bought in 2019
-        //        var getValue = new SqlCommand("select sum(discs) from record where bought > '31-Dec-2018' and bought < '01-Jan-2020'", cn);
+                // this is to stop a divide by zero error if nothing has been bought
+                if (statistics.Cost2019 > 1)
+                {
+                    var av2019 = statistics.Cost2019 / (decimal)statistics.Disks2019;
+                    statistics.Av2019 = av2019;
+                }
+                else
+                {
+                    statistics.Cost2018 = 0.00m;
+                    statistics.Av2018 = 0.00m;
+                }
+            }
 
-        //        await cn.OpenAsync();
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                int disks2020 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2019-12-31' and bought < '2021-01-01'");
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            disks2019 = (int?)result;
-        //        }
+                statistics.Disks2020 = disks2020;
+            }
 
-        //        cn.Close();
-        //        statistics.Disks2019 = disks2019 ?? 0;
-        //    }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                decimal cost2020 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2019-12-31' and bought < '2021-01-01'");
 
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for amount spent on CD's in 2019
-        //        var cost2019 = 0.0m;
-        //        var getValue = new SqlCommand("select sum(cost) from record where bought > '31-Dec-2018' and bought < '01-Jan-2020'", cn);
+                statistics.Cost2020 = cost2020;
 
-        //        await cn.OpenAsync();
+                // this is to stop a divide by zero error if nothing has been bought
+                if (statistics.Cost2020 > 1)
+                {
+                    var av2020 = statistics.Cost2020 / (decimal)statistics.Disks2020;
+                    statistics.Av2020 = av2020;
+                }
+                else
+                {
+                    statistics.Cost2020 = 0.00m;
+                    statistics.Av2020 = 0.00m;
+                }
+            }
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            cost2019 = (decimal)result;
-        //        }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                int disks2021 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2020-12-31' and bought < '2022-01-01'");
 
-        //        // this is to stop a divide by zero error if nothing has been bought
-        //        if (cost2019 > 1)
-        //        {
-        //            statistics.Cost2019 = cost2019;
-        //            var av2019 = cost2019 / (decimal)disks2019;
-        //            statistics.Av2019 = av2019;
-        //        }
-        //        else
-        //        {
-        //            statistics.Cost2019 = 0.00m;
-        //            statistics.Av2019 = 0.00m;
-        //        }
+                statistics.Disks2021 = disks2021;
+            }
 
-        //        cn.Close();
-        //    }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                decimal cost2021 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2020-12-31' and bought < '2022-01-01'");
 
-        //    int? disks2020 = null;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of CD's bought in 2020
-        //        var getValue = new SqlCommand("select sum(discs) from record where bought > '31-Dec-2019' and bought < '01-Jan-2021'", cn);
+                statistics.Cost2021 = cost2021;
 
-        //        await cn.OpenAsync();
+                // this is to stop a divide by zero error if nothing has been bought
+                if (statistics.Cost2021 > 1)
+                {
+                    var av2021 = statistics.Cost2021 / (decimal)statistics.Disks2021;
+                    statistics.Av2021 = av2021;
+                }
+                else
+                {
+                    statistics.Cost2021 = 0.00m;
+                    statistics.Av2021 = 0.00m;
+                }
+            }
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            disks2020 = (int?)result;
-        //        }
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                int disks2022 = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE bought > '2021-12-31' and bought < '2023-01-01'");
 
-        //        cn.Close();
-        //        statistics.Disks2020 = disks2020 ?? 0;
-        //    }
+                statistics.Disks2022 = disks2022;
+            }
 
-        //    var cost2020 = 0.0m;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for amount spent on CD's in 2020
-        //        var getValue = new SqlCommand("select sum(cost) from record where bought > '31-Dec-2019' and bought < '01-Jan-2021'", cn);
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                decimal cost2022 = await cn.ExecuteScalarAsync<decimal>("SELECT COALESCE(SUM(Cost), 0) FROM Record WHERE bought > '2021-12-31' and bought < '2023-01-01'");
 
-        //        await cn.OpenAsync();
+                statistics.Cost2022 = cost2022;
 
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            cost2020 = (decimal)result;
-        //        }
+                // this is to stop a divide by zero error if nothing has been bought
+                if (statistics.Cost2022 > 1)
+                {
+                    var av2022 = statistics.Cost2022 / (decimal)statistics.Disks2022;
+                    statistics.Av2022 = av2022;
+                }
+                else
+                {
+                    statistics.Cost2022 = 0.00m;
+                    statistics.Av2022 = 0.00m;
+                }
+            }
 
-        //        var av2020 = cost2020 / (decimal)disks2020;
-        //        statistics.Av2020 = av2020;
+            using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
+            {
+                var totalRecords = await cn.ExecuteScalarAsync<int>("SELECT COALESCE(SUM(discs), 0) FROM Record WHERE media = 'R'");
 
-        //        cn.Close();
-        //        statistics.Cost2020 = cost2020;
-        //    }
-
-        //    int? disks2021 = null;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of CD's bought in 2021
-        //        var getValue = new SqlCommand("select sum(discs) from record where bought > '31-Dec-2020' and bought < '01-Jan-2022'", cn);
-
-        //        await cn.OpenAsync();
-
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            disks2021 = (int?)result;
-        //        }
-
-        //        cn.Close();
-        //        statistics.Disks2021 = disks2021 ?? 0;
-        //    }
-
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for amount spent on CD's in 2021
-        //        var cost2021 = 0.0m;
-        //        var getValue = new SqlCommand("select sum(cost) from record where bought > '31-Dec-2020' and bought < '01-Jan-2022'", cn);
-
-        //        await cn.OpenAsync();
-
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            cost2021 = (decimal)result;
-        //        }
-
-        //        // this is to stop a divide by zero error if nothing has been bought
-        //        if (cost2021 > 1)
-        //        {
-        //            statistics.Cost2021 = cost2021;
-        //            var av2021 = cost2021 / (decimal)disks2021;
-        //            statistics.Av2021 = av2021;
-        //        }
-        //        else
-        //        {
-        //            statistics.Cost2021 = 0.00m;
-        //            statistics.Av2021 = 0.00m;
-        //        }
-
-        //        cn.Close();
-        //    }
-
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of records
-        //        int? totalRecords = null;
-        //        var getValue = new SqlCommand("select sum(discs) from record where media='R'", cn);
-
-        //        await cn.OpenAsync();
-
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            totalRecords = (int?)result;
-        //        }
-
-        //        cn.Close();
-        //        statistics.TotalRecords = totalRecords ?? 0;
-        //    }
-
-        //    int? disks2022 = null;
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for Number of CD's bought in 2022
-        //        var getValue = new SqlCommand("select sum(discs) from record where bought > '31-Dec-2021' and bought < '01-Jan-2023'", cn);
-
-        //        await cn.OpenAsync();
-
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            disks2022 = (int?)result;
-        //        }
-
-        //        cn.Close();
-        //        statistics.Disks2022 = disks2022 ?? 0;
-        //    }
-
-        //    using (IDbConnection cn = new MySqlConnection(LoadConnectionString()))
-        //    {
-        //        // query for amount spent on CD's in 2022
-        //        var cost2022 = 0.0m;
-        //        var getValue = new SqlCommand("select sum(cost) from record where bought > '31-Dec-2021' and bought < '01-Jan-2023'", cn);
-
-        //        await cn.OpenAsync();
-
-        //        var result = await getValue.ExecuteScalarAsync();
-        //        if (result != DBNull.Value)
-        //        {
-        //            cost2022 = (decimal)result;
-        //        }
-
-        //        // this is to stop a divide by zero error if nothing has been bought
-        //        if (cost2022 > 1)
-        //        {
-        //            statistics.Cost2022 = cost2022;
-        //            var av2022 = cost2022 / (decimal)disks2022;
-        //            statistics.Av2022 = av2022;
-        //        }
-        //        else
-        //        {
-        //            statistics.Cost2022 = 0.00m;
-        //            statistics.Av2022 = 0.00m;
-        //        }
-
-        //        cn.Close();
-        //    }
+                statistics.TotalRecords = totalRecords;
+            }
 
             return statistics;
         }
@@ -415,6 +304,7 @@ namespace DapperDAL
         {
             return _ap.Instance.ConnectionString;
         }
+
         #endregion
     }
 }
